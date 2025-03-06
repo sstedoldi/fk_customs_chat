@@ -1,0 +1,133 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Customer Orders API Stack'
+
+Parameters:
+  StageName:
+    Type: String
+    Default: prod
+    Description: API Gateway stage name
+  QueryResultsBucket:
+    Type: String
+    Description: S3 bucket for Athena query results
+  ApiSpecification:
+    Type: String
+    Description: API specification file
+
+Resources:
+  # Lambda Function
+  CustomerOrdersFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: customer-orders-api
+      Handler: customer_orders_api.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: !Ref QueryResultsBucket
+        S3Key: lambda/customer_orders_api.zip
+      Runtime: python3.9
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref StageName
+          QUERY_RESULTS_BUCKET: !Ref QueryResultsBucket
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: AthenaAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:PutObject
+                Resource:
+                  - !Sub arn:aws:s3:::${QueryResultsBucket}
+                  - !Sub arn:aws:s3:::${QueryResultsBucket}/*
+              - Effect: Allow
+                Action:
+                  - glue:GetTable
+                  - glue:GetDatabase
+                Resource: '*'
+
+  # API Gateway
+  CustomerOrdersApi:
+    Type: AWS::ApiGateway::RestApi
+    DependsOn:
+      - CustomerOrdersFunction 
+    Properties:
+      Name: customer-orders-api
+      Description: API for accessing customer orders
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Body: 
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: !Ref ApiSpecification
+
+  # API Gateway Deployment
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - CustomerOrdersApi
+    Properties:
+      RestApiId: !Ref CustomerOrdersApi
+      Description: Production deployment
+
+  # API Gateway Stage
+  ApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiDeployment
+      RestApiId: !Ref CustomerOrdersApi
+      StageName: !Ref StageName
+
+  # Lambda Permission for API Gateway
+  LambdaApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt CustomerOrdersFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${CustomerOrdersApi}/*
+
+  # Lambda Permission for Bedrock Agent
+  LambdaBedrockPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt CustomerOrdersFunction.Arn
+      Principal: bedrock.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
+      SourceArn: !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*
+
+Outputs:
+  ApiUrl:
+    Description: URL of the API
+    Value: !Sub https://${CustomerOrdersApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}
+  ApiId:
+    Description: API Gateway ID
+    Value: !Ref CustomerOrdersApi 

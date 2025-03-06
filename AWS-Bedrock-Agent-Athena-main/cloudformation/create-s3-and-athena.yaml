@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template to create an S3 bucket and Athena workgroup'
+
+Parameters:
+  BucketBaseName:
+    Type: String
+    Description: Base name for the S3 bucket (will be need to be unique identifier)
+    AllowedPattern: '[a-z0-9][a-z0-9-]*'
+    ConstraintDescription: 'Bucket name can include numbers, lowercase letters, and hyphens'
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${BucketBaseName}
+
+  AthenaWorkgroup:
+    Type: AWS::Athena::WorkGroup
+    DependsOn: S3Bucket
+    Properties:
+      Name: bedrock_demo
+      Description: Workgroup for Bedrock demo using Athena V3
+      WorkGroupConfiguration:
+        EnforceWorkGroupConfiguration: true
+        EngineVersion:
+          SelectedEngineVersion: "Athena engine version 3"
+        ResultConfiguration:
+          OutputLocation: !Sub s3://${S3Bucket}/athena-results/
+        PublishCloudWatchMetricsEnabled: true
+
+Outputs:
+  BucketName:
+    Description: Name of the created S3 bucket
+    Value: !Ref S3Bucket
+  BucketARN:
+    Description: ARN of the created S3 bucket
+    Value: !GetAtt S3Bucket.Arn
+  WorkgroupName:
+    Description: Name of the created Athena workgroup
+    Value: !Ref AthenaWorkgroup 

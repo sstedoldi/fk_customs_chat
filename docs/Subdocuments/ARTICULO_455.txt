@@ -1,0 +1,15 @@
+SECCION: SECCION V
+TITULO: TITULO III
+Capítulo: Capítulo Cuarto
+ARTICULO: 455
+
+ARTICULO 455. – . – Siempre que el importe y la solvencia de la garantía fueren considerados satisfactorios por el servicio aduanero, los interesados podrán optar por alguna de las formas siguientes:
+La constitución, ampliación, modificación, sustitución y cancelación de la garantía podrá efectivizarse por medios electrónicos o magnéticos que aseguren razonablemente la autoría e inalterabilidad de las mismas, en las formas, requisitos y condiciones que a tal efecto establezca la reglamentación. (Párrafo incorporado por art. 20 de la Ley N° 25.986 B.O. 5/1/2005.)
+1. depósito de dinero en efectivo;
+2. depósito de títulos de la deuda pública, computados sus valores del modo que determinare la reglamentación;
+3. garantía bancaria;
+4. seguro de garantía;
+5. garantía real, en primer grado de privilegio, únicamente para asegurar el pago de los importes comprendidos en una espera o facilidad de pago de las autorizadas en este código, en cuyo caso el valor de los inmuebles o muebles de que se tratare se establecerá del modo que determinare la reglamentación;
+6. afectación expresa de la coparticipación federal en el producido de impuestos nacionales, cuando se tratare de operaciones efectuadas o a efectuarse por entes o dependencias centralizadas o descentralizadas de las provincias o municipalidades que tuvieren tal derecho;
+7. aval del Tesoro nacional, cuando se tratare de operaciones efectuadas o a efectuarse por entes o dependencias centralizadas o descentralizadas de la Nación, en cuyo caso las afectaciones correspondientes se efectuarán del modo que determinare la reglamentación;
+8. las demás que autorizare la reglamentación para los supuestos y en las condiciones que allí se establecieren.

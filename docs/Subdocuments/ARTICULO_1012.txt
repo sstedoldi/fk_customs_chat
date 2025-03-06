@@ -1,0 +1,10 @@
+SECCION: SECCION XIV PROCEDIMIENTOS
+TITULO: DISPOSICIONES GENERALES
+Capítulo: Capítulo Primero
+ARTICULO: 1012
+
+ARTICULO 1012. – . – Sin perjuicio de los actos cuya notificación estuviere expresamente prevista en los procedimientos regulados en este código, deberán ser notificados:
+1. los actos administrativos de alcance individual que tuvieren carácter definitivo y los que, sin serlo, obstaren a la prosecución de los trámites;
+2. los que resolvieren un incidente planteado o que, en alguna medida, afectaren derechos subjetivos o intereses legítimos;
+3. los que ordenaren emplazamientos, intimaciones, citaciones, vistas o traslados;
+4. los demás que la autoridad dispusiere.

@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: Customer Orders API
+  version: 1.0.0
+  description: API for accessing customer orders information
+
+paths:
+  /orders/customer/{name}:
+    get:
+      operationId: get-customer-orders-by-name
+      summary: Get orders for a specific customer by name
+      description: Retrieves all orders associated with a customer. The customer can be searched by their full name, first name, or last name. Returns both customer details and their order history.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer name (full name, first name, or last name)
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CustomerOrdersFunction.Arn}/invocations
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        timeoutInMillis: 29000
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerOrders'
+        '404':
+          description: Customer not found
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        full_name:
+          type: string
+    
+    Order:
+      type: object
+      properties:
+        salesorderid:
+          type: string
+        salesorderdetailid:
+          type: string
+        orderdate:
+          type: string
+        duedate:
+          type: string
+        shipdate:
+          type: string
+        employeeid:
+          type: string
+        customerid:
+          type: string
+        subtotal:
+          type: number
+        taxamt:
+          type: number
+        freight:
+          type: number
+        totaldue:
+          type: number
+        productid:
+          type: string
+        orderqty:
+          type: integer
+        unitprice:
+          type: number
+        unitpricediscount:
+          type: number
+        linetotal:
+          type: number
+    
+    CustomerOrders:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order' 

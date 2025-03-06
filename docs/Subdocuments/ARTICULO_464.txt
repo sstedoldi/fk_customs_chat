@@ -1,0 +1,7 @@
+SECCION: SECCION V
+TITULO: TITULO III
+Capítulo: Capítulo Cuarto
+ARTICULO: 464
+
+ARTICULO 464. – . – 1. Cuando se hubiere librado mercadería mediando liquidación provisoria bajo el régimen de garantía por hallarse sujeta a la eventual exigencia de diferencia de tributos, la determinación tributaria que se estableciere con posterioridad sólo podrá ser impugnada previo ajuste de la garantía oportunamente prestada, cuyo importe deberá cubrir la diferencia entre lo pagado y lo establecido en la respectiva determinación.
+2. Si el interesado no efectuare el ajuste de garantía indicado en el apartado 1, no podrá iniciar el procedimiento de impugnación de la determinación, la que quedará firme, sin perjuicio de la reparación a que hubiere lugar.

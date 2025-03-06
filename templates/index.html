@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .left {
+            flex: 1;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for better readability */
+            overflow: auto; /* Enable scrolling if content overflows */
+        }
+        .right {
+            flex: 1;
+            background: url("{{ url_for('static', filename='bacuda_background.png') }}") center/cover no-repeat;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .content {
+            position: absolute;
+            top: 15%; /* Adjust the top percentage as needed */
+            left: 15%; /* Adjust the left percentage as needed */
+            width: 70%; /* Adjust the width percentage as needed */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h1>{{ app_name }}</h1>
+            <h2>{{ program_name }}</h2>
+            <p>{{ author_name }}</p>
+            <h3 style="color: green; font-weight: bold;">RUNNING</h3>
+            <!-- <p>Current Date: {{ current_date }}</p> -->
+        </div>
+        <div class="right">
+            <div class="content">
+                <!-- Content for the right side -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

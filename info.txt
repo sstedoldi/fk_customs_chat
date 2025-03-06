@@ -1,0 +1,10 @@
+Streamlit chatbot interface
+https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps
+
+LlamaIndex calling AWS Bedrock Converse Agent
+https://docs.llamaindex.ai/en/stable/examples/agent/bedrock_converse_agent/
+
+AWS Bedrock Agent to Query Athena Data
+https://www.youtube.com/watch?v=lkMT8tyZ1-Y
+https://github.com/johnny-chivers/AWS-Bedrock-Agent-Athena
+
