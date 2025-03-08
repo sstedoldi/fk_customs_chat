@@ -1,111 +1,31 @@
-# Installations for local development
+### Local
 
 Initial config
-    WSL --install # to use ubuntu/linux promtp in windows
-    En WSL
-        sudo apt install make
-        sudo apt-get update
-        sudo apt install python3.11-venv
-
-# Enviroment creation
+WSL --install # to use ubuntu/linux promtp in windows
+En WSL
+> sudo apt install make
+> sudo apt-get update
+> sudo apt install python3.11-venv
 
 Enviroment creation and activation
 Using the /home/sstedoldi (user) path
-    $ python3 -m venv ~/.chat_llamaindex
 
-Enviroment activation
-    $ source ~/.chat_llamaindex/bin/activate
-
-# Create scaffolding
-
-Chatbot_app/
-    ├── Makefile
-    ├── Dockerfile
-    ├── requirements.txt
-    ├── app.py
-    ├── config.py
-    ├── modules/
-    │   ├── indexing_pipeline.py
-    │   ├── llm_interaction.py
-    │   ├── vector_database.py    
-    │   └── vectordb_retrieve.py
-    ├── docs/
-    │   └── ...   
-    ├── static/
-    │   └── ...
-    └── tests/
-        └── ...
+> python3 -m venv ~/.chat_llamaindex
+> source ~/.chat_llamaindex/bin/activate
 
 Before executing make steps, source must be defined 
-    source ~/.chatbot_llamaindex/bin/activate
+> source ~/.chat_llamaindex/bin/activate
 
-## Requirements.txt contains the libraries needed to run the code
-    Manually requierements definitions
-    Adding --dry-run after pip3 commands to check before proceeding
-    # pytorch locally
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-    pip3 show torch torchvision torchaudio
-        torch==2.5.0+cu121
-        torchvision==0.20.0+cu121
-        torchaudio==2.5.0+cu121
-    # llama-index packages
-    pip3 install llama-index
-    pip3 show llama-index
-        llama-index==0.11.18
-    pip3 install llama-index-readers-file pymupdf
-    pip3 show llama-index-readers-file pymupdf
-        llama-index-readers-file==0.2.2
-        pymupdf==1.24.11
-    pip3 install llama-index-vector-stores-postgres
-    pip3 show llama-index-vector-stores-postgres
-        llama-index-vector-stores-postgres==0.2.6
-    pip3 install llama-index-embeddings-huggingface
-    pip3 show llama-index-embeddings-huggingface
-        llama-index-embeddings-huggingface==0.3.1
-    pip3 install llama-index-readers-web
-    pip3 show llama-index-readers-web
-        llama-index-readers-web==0.2.4
-    # flask packages
-    pip3 install Flask flask-cors
-    pip3 show Flask flask-cors
-        Flask==3.0.3
-        flask-cors==5.0.0
+requirements.txt contains the libraries needed to run the code
+> pip install -r requirements.txt
 
-## Makefile contains the steps to be executed during the stages of our deployment
+Makefile contains the steps to be executed during the stages of our deployment
     Installations
     Docker buildings
     Lint and Tests
     Running the app
 
+###################################
+###################################
 
-
-
-
-
-#################
-
-# Git reporsitory
-
-Git
-    #git config --global init.defaultBranch main
-    #git config --list
-    git init
-    git branch -m main
-    git add .
-    git commit -m "inicial commit"
-    git remote add origin https://github.com/sstedoldi/py_project1.git
-    git push -u origin main
-
-SSH
-    ssh-keygen -t rsa
-    cat /home/ec2-user/.ssh/id_rsa.pub
-    copy ssh key and add it in github ssh new key
-
-
-On en new clould platform
-
-    0- new SSH key
-    1- git clone git@github.com:sstedoldi/py_project1.git
-    2- cd py_project1
-    3- python3 -m venv ~/.py_project1
-    4- source ~/.py_project1/bin/activate
+### Docker

@@ -1,32 +1,18 @@
 #################
 # pytorch locally
-# !pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-# !pip3 show torch torchvision torchaudio
-# torch==2.5.0+cu121
-# torchvision==0.20.0+cu121
-# torchaudio==2.5.0+cu121
+# torch==2.5.0
+# torchvision==0.20.0
+# torchaudio==2.5.0
 ######################
 # llama-index packages
-# !pip3 install llama-index
-# !pip3 show llama-index
 llama-index==0.11.18
-# !pip3 install llama-index-readers-file pymupdf
-# !pip3 show llama-index-readers-file pymupdf
 llama-index-readers-file==0.2.2
 pymupdf==1.24.11
-# pip3 install llama-index-vector-stores-postgres
-# pip3 show llama-index-vector-stores-postgres
 llama-index-vector-stores-postgres==0.2.6
-# pip3 install llama-index-embeddings-huggingface
-# pip3 show llama-index-embeddings-huggingface
 llama-index-embeddings-huggingface==0.3.1
-# pip3 install llama-index-readers-web
-# pip3 show llama-index-readers-web
 llama-index-readers-web==0.2.4
 ################
 # flask packages
-# pip3 install Flask flask-cors
-# pip3 show Flask flask-cors
 Flask==3.0.3
 flask-cors==5.0.0
 # OpenAI packages
