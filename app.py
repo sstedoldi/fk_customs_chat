@@ -36,16 +36,19 @@ def initialize_app(app):
     with app.app_context():
         # Database info
         db_args = {
+            'db_def': db_config['db_def'],
             'db_name': db_config['db_name'],
             'host': db_config['host'],
             'password': db_config['password'],
             'port': db_config['port'],
             'user': db_config['user']
         }
-        # Connecting to the database
-        conn = connect_to_database(**db_args) \
-            if database_exists(**db_args) \
-            else create_database(**db_args, stay_conn=True)
+        # Connecting to the default database
+        conn = connect_to_database(**db_args)
+        # Connecting to the vector database
+        conn = connect_to_database(**db_args, default=False) \
+            if database_exists(**db_args, default=False) \
+            else create_database(**db_args, stay_conn=True, default=False)
         # Vector store info
         vs_args = {
             'table_name': vector_store_config['table_name'],

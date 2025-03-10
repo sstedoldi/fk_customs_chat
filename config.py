@@ -4,7 +4,8 @@ def config_apis():
     os.environ['OPENAI_API_KEY'] = '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'
     
 db_config = {
-    "db_name": "vector_db",
+    "db_def": "postgres",
+    "db_name": "vector_db", 
     # "host": "172.28.131.115",  # WSL IP address
     "host": "localhost",
     "port": "5432",
