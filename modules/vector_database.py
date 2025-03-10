@@ -14,7 +14,7 @@ from llama_index.vector_stores.postgres import PGVectorStore
 def create_database(db_name, host, password, port, user, stay_conn = False):
     try:
         conn = psycopg2.connect(
-            dbname="postgres",
+            dbname=db_name,
             host=host,
             password=password,
             port=port,
@@ -36,7 +36,7 @@ def create_database(db_name, host, password, port, user, stay_conn = False):
 def database_exists(db_name, host, password, port, user):
     try:
         conn = psycopg2.connect(
-            dbname="postgres",
+            dbname=db_name,
             host=host,
             password=password,
             port=port,

@@ -29,3 +29,34 @@ Makefile contains the steps to be executed during the stages of our deployment
 ###################################
 
 ### Docker
+
+https://hub.docker.com/r/ramsrib/pgvector
+
+Pulling and running container
+> docker run -d --name pgvector-16 -p 5432:5432 -e POSTGRES_PASSWORD=postgres ramsrib/pgvector:16
+
+Creating pgvector extension
+> docker exec -it pgvector-16 psql -U postgres -c "CREATE EXTENSION vector"
+
+Checking extension version
+> docker exec -it pgvector-16 psql -U postgres -c "SELECT extversion FROM pg_extension WHERE extname = 'vector';"
+
+User creation
+> docker exec -it pgvector-16 psql -U postgres
+
+> postgres=# CREATE ROLE sst WITH LOGIN PASSWORD 'password';
+
+> postgres=# ALTER ROLE sst SUPERUSER;
+
+Database creation
+> CREATE DATABASE postgres; # see if is not already created
+
+Vector extension
+> postgres=# CREATE EXTENSION IF NOT EXISTS vector;
+
+Conecting to vector_db
+> docker exec -it pgvector-16 psql -U sst -d vector_db
+
+Listing the tables
+> \dt 
+
