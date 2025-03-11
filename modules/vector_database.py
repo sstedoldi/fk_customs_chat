@@ -11,11 +11,10 @@ from llama_index.vector_stores.postgres import PGVectorStore
 
 
 # Method to create a new database
-def create_database(db_def, db_name, host, password, port, user, stay_conn = False, default = True):
+def create_database(db_def, db_name, host, password, port, user, stay_conn = False):
     try:
-        dbname = db_def if default else db_name
         conn = psycopg2.connect(
-            dbname=dbname,
+            dbname=db_def, # connect to the default database for admin tasks
             host=host,
             password=password,
             port=port,
@@ -23,56 +22,62 @@ def create_database(db_def, db_name, host, password, port, user, stay_conn = Fal
         )
         conn.autocommit = True
         with conn.cursor() as c:
-            c.execute(f"DROP DATABASE IF EXISTS {dbname}")
-            c.execute(f"CREATE DATABASE {dbname}")
-        print(f"Database {dbname} created/reseted successfully.")
-        if stay_conn:
-            return conn
+            c.execute(f"DROP DATABASE IF EXISTS {db_name}")
+            c.execute(f"CREATE DATABASE {db_name}")
+            print(f"Database {db_name} created/reseted successfully.")
+        if stay_conn: # connecting to the new database
+            print(f"Connecting to the database {db_name}.")
+            return psycopg2.connect(
+                dbname=db_name,
+                host=host,
+                password=password,
+                port=port,
+                user=user,
+            )
         conn.close()
     except psycopg2.Error as e:
-        print(f"Error creating database {dbname}: {e}")
+        print(f"Error creating database {db_name}: {e}")
 
 
 # Method to check if a database exists
-def database_exists(db_def, db_name, host, password, port, user, default = True):
+def database_exists(db_def, db_name, host, password, port, user):
     try:
-        dbname = db_def if default else db_name
         conn = psycopg2.connect(
-            dbname=dbname,
+            dbname=db_def, # connect to the default database for admin tasks
             host=host,
             password=password,
             port=port,
             user=user,
         )
         with conn.cursor() as cursor:
-            cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s;", (dbname,))
+            cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s;", (db_name,))
             exists = cursor.fetchone() is not None
         conn.close()
         if exists:
-            print(f"Database {dbname} exists.")
+            print(f"Database {db_name} exists.")
         else:
-            print(f"Database {dbname} does not exist.")
+            print(f"Database {db_name} does not exist.")
         return exists
     except psycopg2.Error as e:
-        print(f"Error checking if database {dbname} exists: {e}")
+        print(f"Error checking if database {db_name} exists: {e}")
         return False
 
 
 # Method to connect to an existing database
-def connect_to_database(db_def, db_name, host, password, port, user, default = True):
+def connect_to_database(db_def, db_name, host, password, port, user):
     try:
-        dbname = db_def if default else db_name
+        print(f"Connecting to the database {db_name}.")
         conn = psycopg2.connect(
-            dbname=dbname,
+            dbname=db_name, # connect to the specified database
             host=host,
             password=password,
             port=port,
             user=user,
         )
-        print(f"Connected to the database {dbname}.")
+        print(f"Connected to the {db_name} database.")
         return conn
     except psycopg2.Error as e:
-        print(f"Error connecting to database {dbname}: {e}")
+        print(f"Error connecting to database {db_name}: {e}")
         return None
 
 

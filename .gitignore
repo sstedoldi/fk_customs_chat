@@ -1,2 +1,4 @@
+**/__pycache__
+**/*.pyc
 AWS-Bedrock-Agent-Athena-main/
 docs/Subdocuments/

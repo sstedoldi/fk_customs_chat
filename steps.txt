@@ -27,8 +27,9 @@ Makefile contains the steps to be executed during the stages of our deployment
 
 ###################################
 ###################################
-
 ### Docker
+
+It is important to manage IP and ports correctly, to connect to the proper container
 
 https://hub.docker.com/r/ramsrib/pgvector
 
@@ -48,15 +49,29 @@ User creation
 
 > postgres=# ALTER ROLE sst SUPERUSER;
 
-Database creation
-> CREATE DATABASE postgres; # see if is not already created
-
-Vector extension
-> postgres=# CREATE EXTENSION IF NOT EXISTS vector;
+Listing databases
+> \l
 
 Conecting to vector_db
 > docker exec -it pgvector-16 psql -U sst -d vector_db
 
 Listing the tables
 > \dt 
+
+###################################
+###################################
+### Next steps
+
+# General
+Learn to configure secrets for passwords
+Binding the vector_db tables to persistant directories
+Compose fk_customs_chat with postgres container
+
+# Indexing
+Edit indexing process to save logs about the indexed documents
+Allow creation of diff vector tables, for diff topics
+
+# llm
+Develop LLM connection with AWS for RAG architecture
+Research about Agentic solutions
 

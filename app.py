@@ -43,12 +43,10 @@ def initialize_app(app):
             'port': db_config['port'],
             'user': db_config['user']
         }
-        # Connecting to the default database
-        conn = connect_to_database(**db_args)
         # Connecting to the vector database
-        conn = connect_to_database(**db_args, default=False) \
-            if database_exists(**db_args, default=False) \
-            else create_database(**db_args, stay_conn=True, default=False)
+        conn = connect_to_database(**db_args) \
+            if database_exists(**db_args) \
+            else create_database(**db_args, stay_conn=True)
         # Vector store info
         vs_args = {
             'table_name': vector_store_config['table_name'],
@@ -66,7 +64,8 @@ def initialize_app(app):
         # Indexing pipeline
         indexing_pipeline = IndexingPipeline(embed_model, vector_store)
         # Retriever pipeline
-        db_args.update({'dbname': db_args.pop('db_name')}) # to tun SimpleConnectionPool
+        db_args.update({'dbname': db_args.pop('db_name')}) # to run SimpleConnectionPool
+        db_args.pop('db_def')  # not needed for SimpleConnectionPool
         VectorDBRetriever.setup_logging(level=logging.INFO)
         retriever = VectorDBRetriever(
             vector_store=vector_store,
