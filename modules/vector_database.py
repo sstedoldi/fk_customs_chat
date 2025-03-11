@@ -94,7 +94,7 @@ def create_vector_store(db_config, table_name, embed_dim):
             table_name=table_name,
             embed_dim=embed_dim,  # jinaai/jina-embeddings-v2-base-es embedding dimension
         )
-        print("Vector store created successfully.")
+        print(f"Vector store named {table_name} created successfully.")
         return vector_store
     except Exception as e:
         print(f"Error creating vector store: {e}")

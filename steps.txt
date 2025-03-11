@@ -58,6 +58,10 @@ Conecting to vector_db
 Listing the tables
 > \dt 
 
+Starting container
+> docker ps -a #to check name
+> docker start pgvector-16
+
 ###################################
 ###################################
 ### Next steps
