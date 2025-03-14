@@ -107,7 +107,7 @@ class IndexingPipeline:
                 # Start with the source document metadata (if any)
                 metadata = src_doc.metadata.copy() if src_doc.metadata else {}
                 # Merge any extra metadata provided (e.g., source path or type)
-                if extra_metadata:
+                if extra_metadata is not None:
                     metadata.update(extra_metadata)
                 # Add the indexing date if not already provided
                 metadata.setdefault('indexed_date', datetime.now().isoformat())
@@ -127,6 +127,7 @@ class IndexingPipeline:
             self.vector_store.add(nodes)
 
             # Log the indexing event for the batch of documents
+            print(extra_metadata)
             self._log_indexing_event(documents, extra_metadata)
 
         except Exception as e:
@@ -150,7 +151,7 @@ class IndexingPipeline:
                     source TEXT,
                     doc_type TEXT,
                     indexed_date TIMESTAMP,
-                    extra_metadata JSONB
+                    metadata JSONB
                 )
             """)
             connection.commit()
@@ -194,7 +195,7 @@ class IndexingPipeline:
                                else "N/A")
                 # Log the entire original metadata as JSON for additional context
                 cursor.execute("""
-                    INSERT INTO indexing_logs (document_id, source, doc_type, indexed_date, extra_metadata)
+                    INSERT INTO indexing_logs (document_id, source, doc_type, indexed_date, metadata)
                     VALUES (%s, %s, %s, %s, %s)
                 """, (document_id, source, doc_type, indexed_date, json.dumps(doc.metadata)))
             connection.commit()

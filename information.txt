@@ -14,7 +14,7 @@ https://github.com/johnny-chivers/AWS-Bedrock-Agent-Athena
 
 ## General
 
-docs/codigo_aduanero.pdf
+docs/codigo-aduanero.pdf
 https://www.argentina.gob.ar/normativa/nacional/decreto-70-2023-395521/texto
 
 

@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request, render_template
-from flask import session  # to generate secret info about the user
 from flask_cors import CORS
 import os
 from datetime import datetime
 import logging
+import json
 from sentence_transformers import SentenceTransformer
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core import QueryBundle
@@ -19,7 +19,7 @@ from modules.llm_interaction import call_adubot_prueba1
 from config import db_config, vector_store_config  # Import configuration from the config module
 from config import embed_model_config, config_apis
 
-app = Flask(__name__)  # , static_folder='static')
+app = Flask(__name__)
 CORS(app)
 
 # Initialize logging
@@ -61,11 +61,12 @@ def initialize_app(app):
         embed_model = HuggingFaceEmbedding(
             model_name=model_name, trust_remote_code=True
         )
-        # Indexing pipeline
-        indexing_pipeline = IndexingPipeline(embed_model, vector_store)
-        # Retriever pipeline
-        db_args.update({'dbname': db_args.pop('db_name')}) # to run SimpleConnectionPool
+        # Cleaning db_args
         db_args.pop('db_def')  # not needed for SimpleConnectionPool
+        db_args.update({'dbname': db_args.pop('db_name')}) # to run SimpleConnectionPool
+        # Indexing pipeline
+        indexing_pipeline = IndexingPipeline(embed_model, vector_store, db_connection_params=db_args)
+        # Retriever pipeline
         VectorDBRetriever.setup_logging(level=logging.INFO)
         retriever = VectorDBRetriever(
             vector_store=vector_store,
@@ -78,7 +79,6 @@ def initialize_app(app):
         config_apis()
         logger.info("App initialization complete.")
 
-
 @app.route('/')
 def index():
     app_name = 'Adubot App Server'
@@ -87,7 +87,6 @@ def index():
     current_date = datetime.now().strftime("%Y-%m-%d")
     return render_template('index.html', app_name=app_name, program_name=program_name,
                            author_name=author_name, current_date=current_date)
-
 
 @app.route('/sem_search', methods=['POST'])
 def semantic_search():
@@ -108,24 +107,26 @@ def semantic_search():
         logger.error(f"Error in /sem_search endpoint: {e}")
         return jsonify({'error': 'An error occurred during semantic search'}), 500
 
-
 @app.route('/answer', methods=['POST'])
 def answer():
     try:
         single_request = request.get_json(force=True)
-        query = single_request['query']
+        query = single_request.get('query')
+        metadata = single_request.get('metadata', {})
 
         query_bundle = QueryBundle(query_str=query)
         result = retriever._retrieve(query_bundle)        
         
         response = call_adubot_prueba1(query=query, documents=result)
 
-        return jsonify({'response': response})
+        # Log metadata (user_id, session_id, timestamp)
+        logger.info(f"Query metadata: {json.dumps(metadata)}")
+
+        return jsonify({'response': response, 'metadata': metadata})
 
     except Exception as e:
         logger.error(f"Error in /answer endpoint: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
 
 @app.route('/index', methods=['POST'])
 def index_documents():
@@ -133,6 +134,14 @@ def index_documents():
         data = request.get_json()
         source_type = data.get('source_type')
         source_path = data.get('source_path')
+        additional_info = data.get('additional_info')
+        comments = data.get('comments')
+        metadata = {"source_type" : source_type,
+                    "source_path" : source_path,
+                    "additional_info" : str(additional_info),
+                    "comments" : str(comments)}
+        
+        print(metadata)
 
         if not source_type or not source_path:
             return jsonify({'error': 'source_type and source_path are required'}), 400
@@ -146,17 +155,51 @@ def index_documents():
         else:
             return jsonify({'error': 'Invalid source_type provided'}), 400
 
-        indexing_pipeline.document_processing(documents)
+        indexing_pipeline.document_processing(documents, extra_metadata=metadata)
         return jsonify({'message': 'Indexing completed successfully'}), 200
 
     except Exception as e:
         logger.error(f"Error in /index endpoint: {e}")
         return jsonify({'error': 'An error occurred during indexing'}), 500
 
+@app.route('/index_history', methods=['GET'])
+def index_history():
+    """
+    Retrieve indexing history from the database.
+    """
+    connection = None
+    try:
+        connection = indexing_pipeline._connection_pool.getconn()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT document_id, source, doc_type, indexed_date, metadata
+            FROM indexing_logs
+            ORDER BY indexed_date DESC
+            LIMIT 50;
+        """)
+
+        history = []
+        for row in cursor.fetchall():
+            history.append({
+                "document_id": row[0],
+                "source": row[1],
+                "doc_type": row[2],
+                "indexed_date": row[3].isoformat(),
+                "metadata": row[4]
+            })
+
+        cursor.close()
+        return jsonify(history), 200
+
+    except Exception as e:
+        logger.error(f"Error retrieving indexing history: {e}")
+        return jsonify({'error': 'An error occurred fetching index history'}), 500
+
+    finally:
+        if connection:
+            indexing_pipeline._connection_pool.putconn(connection)
 
 if __name__ == '__main__':
     initialize_app(app)
-
-    # Run the app
     app.run(port=8080, debug=True)
-
