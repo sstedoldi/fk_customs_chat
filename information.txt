@@ -8,3 +8,42 @@ AWS Bedrock Agent to Query Athena Data
 https://www.youtube.com/watch?v=lkMT8tyZ1-Y
 https://github.com/johnny-chivers/AWS-Bedrock-Agent-Athena
 
+#####
+
+# Argentine Customs
+
+## General
+
+docs/codigo_aduanero.pdf
+https://www.argentina.gob.ar/normativa/nacional/decreto-70-2023-395521/texto
+
+
+## Imports
+
+Arribo de la mercadería
+via acuatica
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16550/norma.htm
+https://servicios.infoleg.gob.ar/infolegInternet/anexos/355000-359999/357425/norma.htm
+via aerea
+https://www.salarco.net/scripts/normasver.php?norma=ANARES00258199301&pais=ar
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-258-1993-31933/normas-modifican
+https://biblioteca.afip.gob.ar/search/query/norma.aspx?p=t:RAG|n:4517|o:3|a:2019|f:04/07/2019
+via terrestre
+https://www.carballeiro.com/scripts/normasver.php?norma=ANARES00970199501&pais=ar
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-970-1995-16058/normas-modifican
+Destinaciones de impo
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/61577/texact.htm
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/395000-399999/395721/norma.htm
+https://servicios.infoleg.gob.ar/infolegInternet/anexos/305000-309999/306452/norma.htm
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/95000-99999/99258/norma.htm
+https://servicios.infoleg.gob.ar/infolegInternet/anexos/400000-404999/403571/norma.htm
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-1979-2005-112374/actualizacion
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-420-1999-56263/texto
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-244-1997-42021/normas-modifican
+https://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/64430/texact.htm
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/170000-174999/171111/texact.htm
+https://servicios.infoleg.gob.ar/infolegInternet/anexos/150000-154999/154061/texact.htm
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-2382-1991-29152/actualizacion
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/160000-164999/164919/texact.htm
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-581-1999-57447/texto
+https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-581-1999-57447/normas-modifican
