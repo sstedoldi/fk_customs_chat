@@ -65,7 +65,10 @@ def initialize_app(app):
         db_args.pop('db_def')  # not needed for SimpleConnectionPool
         db_args.update({'dbname': db_args.pop('db_name')}) # to run SimpleConnectionPool
         # Indexing pipeline
-        indexing_pipeline = IndexingPipeline(embed_model, vector_store, db_connection_params=db_args)
+        indexing_pipeline = IndexingPipeline(embed_model=embed_model, 
+                                             vector_store=vector_store,
+                                             chunk_size=300, 
+                                             db_connection_params=db_args)
         # Retriever pipeline
         VectorDBRetriever.setup_logging(level=logging.INFO)
         retriever = VectorDBRetriever(
@@ -134,14 +137,14 @@ def index_documents():
         data = request.get_json()
         source_type = data.get('source_type')
         source_path = data.get('source_path')
+        doc_title = data.get('doc_title')
         additional_info = data.get('additional_info')
         comments = data.get('comments')
         metadata = {"source_type" : source_type,
                     "source_path" : source_path,
+                    "doc_title" : str(doc_title),
                     "additional_info" : str(additional_info),
                     "comments" : str(comments)}
-        
-        print(metadata)
 
         if not source_type or not source_path:
             return jsonify({'error': 'source_type and source_path are required'}), 400
@@ -149,7 +152,7 @@ def index_documents():
         if source_type == 'pdf':
             documents = indexing_pipeline.pdf_reader(source_path)
         elif source_type == 'webpage':
-            documents = indexing_pipeline.webpage_reader([source_path])
+            documents = indexing_pipeline.webpage_reader([source_path]) # [] requiered for the function
         elif source_type == 'directory':
             documents = indexing_pipeline.directory_reader(source_path)
         else:
@@ -173,7 +176,7 @@ def index_history():
         cursor = connection.cursor()
 
         cursor.execute("""
-            SELECT document_id, source, doc_type, indexed_date, metadata
+            SELECT doc_title, source_path, source_type, indexed_date, metadata
             FROM indexing_logs
             ORDER BY indexed_date DESC
             LIMIT 50;
@@ -182,9 +185,9 @@ def index_history():
         history = []
         for row in cursor.fetchall():
             history.append({
-                "document_id": row[0],
-                "source": row[1],
-                "doc_type": row[2],
+                "doc_title": row[0],
+                "source_path": row[1],
+                "source_type": row[2],
                 "indexed_date": row[3].isoformat(),
                 "metadata": row[4]
             })

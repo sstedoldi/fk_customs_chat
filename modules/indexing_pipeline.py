@@ -86,7 +86,7 @@ class IndexingPipeline:
         
         :param documents: List of document objects.
         :param extra_metadata: Optional dictionary with additional metadata 
-                               (e.g., {"source": "path/to/file", "source_type": "pdf"}).
+                               (e.g., {"source_path": "path/to/file", "source_type": "pdf"}).
         """
         try:
             # Step 1: Text Parsing using SentenceSplitter
@@ -108,9 +108,10 @@ class IndexingPipeline:
                 metadata = src_doc.metadata.copy() if src_doc.metadata else {}
                 # Merge any extra metadata provided (e.g., source path or type)
                 if extra_metadata is not None:
-                    metadata.update(extra_metadata)
+                        metadata.update(extra_metadata)
                 # Add the indexing date if not already provided
                 metadata.setdefault('indexed_date', datetime.now().isoformat())
+                print(metadata)
                 node.metadata = metadata
                 nodes.append(node)
 
@@ -127,7 +128,6 @@ class IndexingPipeline:
             self.vector_store.add(nodes)
 
             # Log the indexing event for the batch of documents
-            print(extra_metadata)
             self._log_indexing_event(documents, extra_metadata)
 
         except Exception as e:
@@ -147,9 +147,9 @@ class IndexingPipeline:
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS indexing_logs (
                     id SERIAL PRIMARY KEY,
-                    document_id TEXT,
-                    source TEXT,
-                    doc_type TEXT,
+                    doc_title TEXT,
+                    source_path TEXT,
+                    source_type TEXT,
                     indexed_date TIMESTAMP,
                     metadata JSONB
                 )
@@ -170,7 +170,7 @@ class IndexingPipeline:
         
         :param documents: List of document objects that were indexed.
         :param extra_metadata: Optional extra metadata that may include keys like 
-                               'source' and 'source_type'.
+                               'source_path' and 'source_type'.
         """
         if not self._connection_pool:
             return
@@ -181,23 +181,23 @@ class IndexingPipeline:
             cursor = connection.cursor()
             for doc in documents:
                 # Retrieve source and document type from the document metadata or extra_metadata
-                source = (doc.metadata.get("source")
-                          if doc.metadata and "source" in doc.metadata
-                          else extra_metadata.get("source") if extra_metadata and "source" in extra_metadata
+                source_path = (doc.metadata.get("source_path")
+                          if doc.metadata and "source_path" in doc.metadata
+                          else extra_metadata.get("source_path") if extra_metadata and "source_path" in extra_metadata
                           else "unknown")
-                doc_type = (extra_metadata.get("source_type")
+                source_type = (extra_metadata.get("source_type")
                             if extra_metadata and "source_type" in extra_metadata
                             else "unknown")
                 indexed_date = datetime.now()
-                # Use a title or a short summary from the document metadata as document_id
-                document_id = (doc.metadata.get("title")
-                               if doc.metadata and "title" in doc.metadata
-                               else "N/A")
+                doc_title = (doc.metadata.get("doc_title")
+                          if doc.metadata and "doc_title" in doc.metadata
+                          else extra_metadata.get("doc_title") if extra_metadata and "doc_title" in extra_metadata
+                          else "N/A")
                 # Log the entire original metadata as JSON for additional context
                 cursor.execute("""
-                    INSERT INTO indexing_logs (document_id, source, doc_type, indexed_date, metadata)
+                    INSERT INTO indexing_logs (doc_title, source_path, source_type, indexed_date, metadata)
                     VALUES (%s, %s, %s, %s, %s)
-                """, (document_id, source, doc_type, indexed_date, json.dumps(doc.metadata)))
+                """, (doc_title, source_path, source_type, indexed_date, json.dumps(extra_metadata)))
             connection.commit()
             cursor.close()
         except Exception as e:
