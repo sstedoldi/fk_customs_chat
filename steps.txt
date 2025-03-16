@@ -73,6 +73,7 @@ Compose fk_customs_chat with postgres container
 
 # Indexing
 Edit indexing process to save logs about the indexed documents
+Improve indexing_logs to avoid multiple logs per batches in pdfs
 Allow creation of diff vector tables, for diff topics
 
 # llm
