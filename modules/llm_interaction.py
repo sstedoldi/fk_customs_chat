@@ -4,6 +4,10 @@ from jinja2 import Template
 import json
 import os
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # Prompt Template
 template_str = """
 A continuación se presentan los documentos relevantes obtenidos por el modelo de recuperación, con sus respectivas puntuaciones de relevancia. 
@@ -11,12 +15,12 @@ Como experto en materia aduanera de Argentina, por favor proporciona una respues
 
 {% for doc, score in documents %}
 Documento {{ loop.index }}:
-- Titulo: {{ doc.metatada_.doc_title }}
-- Fuente: {{ doc.metatada_.source_path }}
-- Información adicional: {{ doc.metatada_.additional_info }}
-- Comentarios: {{ doc.metatada_.comments }}
-- Contenido: {{ doc.content }}
-- Puntuación de Relevancia: {{ 100*score }}
+- Título: {{ doc.metadata["doc_title"] }}
+- Fuente: {{ doc.metadata["source_path"] }}
+- Información adicional: {{ doc.metadata["additional_info"] }}
+- Comentarios: {{ doc.metadata["comments"] }}
+- Contenido: {{ doc.text }}
+- Puntuación de Relevancia: {{ 100 * score }}%
 
 {% endfor %}
 
@@ -38,10 +42,15 @@ def simple_chat_aws(query, documents):
     """
     Calls AWS Bedrock's Meta Llama model to generate a response based on retrieved documents.
     """
+    logger.info(f"Calling AWS LLM with query: {query}")
+    logger.info(f"Documents retrieved: {documents}")
+
+    # Convert NodeWithScore objects to (node, score) tuples
+    docs_as_tuples = [(nws.node, nws.score) for nws in documents]
 
     # Render the prompt
     template = Template(template_str)
-    prompt = template.render(query=query, documents=documents)
+    prompt = template.render(query=query, documents=docs_as_tuples)
 
     # AWS Bedrock request payload
     payload = {
@@ -58,6 +67,8 @@ def simple_chat_aws(query, documents):
         )
         response_body = json.loads(response["body"].read().decode("utf-8"))
         
+        logger.info(f"Response from AWS: {response_body}")
+        
         return response_body.get("completion", "No response generated.")
 
     except Exception as e:
@@ -65,19 +76,29 @@ def simple_chat_aws(query, documents):
 
 
 def simple_chat_openai(query, documents):
+    logger.info(f"Calling OpenAI LLM with query: {query}")
+    logger.info(f"Documents retrieved: {documents}")
+
     # OpenAI API call
-    client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+    # client = OpenAI(api_key=os.environ['OPENAI_API_KEY']) 
+    # ERROR:__main__:Error in /answer endpoint: Client.__init__() got an unexpected keyword argument 'proxies'
+    client = OpenAI()
     
+    # Convert NodeWithScore objects to (node, score) tuples
+    docs_as_tuples = [(nws.node, nws.score) for nws in documents]
+
     # Render the prompt
     template = Template(template_str)
-    prompt = template.render(query=query, documents=documents)
+    prompt = template.render(query=query, documents=docs_as_tuples)
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Sos un experto en leyes y normativa aduanera de Argentina."},
             {"role": "user", "content": prompt}
         ]
     )
 
-    return response.choices[0].message.content
+    logger.info(f"Response from OpenAI: {response}")
+
+    return response.choices[0].message.content if response.choices else "No response generated"

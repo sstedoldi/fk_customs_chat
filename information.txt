@@ -15,7 +15,103 @@ https://github.com/johnny-chivers/AWS-Bedrock-Agent-Athena
 ## General
 
 docs/codigo-aduanero.pdf
+
+Codigo aduanero en infoleg
+
+Sanción original de la ley 22415 - Titulo preliminar: Disposiciones generales (arts. 1 a 16)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_Titulo_preliminar.htm
+
+Seccion I - Sujetos - Titulo I: Servicio aduanero (derogado por Dto. N° 618/97) (arts. 17 a 35)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S1_TituloI.htm
+
+Seccion I - Sujetos - Titulo II: Auxiliares del comercio y del servicio aduanero (arts. 36 a 90)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S1_TituloII.htm
+
+Seccion I - Sujetos - Titulo III: Importadores y exportadores (arts.91 a 108)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S1_TituloIII.htm
+
+Seccion I - Sujetos - Titulo IV: Otros sujetos (arts. 109 a 111)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S1_TituloIV.htm
+
+Seccion II - Control - Titulo I: Disposiciones generales (arts. 112 a 120)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S2_TituloI.htm
+
+Seccion II - Control - Titulo II: Ambitos de control (arts. 121 a 129)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S2_TituloII.htm
+
+Seccion III - Importacion - Titulo I: Arribo de la mercaderia (arts. 130 a 216)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S3_TituloI.htm
+
+Seccion III - Importacion - Titulo II: Destinaciones de importación (arts. 217 a 320)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S3_TituloII.htm
+
+Seccion IV - Exportacion - Titulo I: Destinaciones de exportación (arts. 321 a 396)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S4_TituloI.htm
+
+Seccion IV - Exportacion - Titulo II: Salida de la mercadería (arts. 397 a 409)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S4_TituloII.htm
+
+Seccion V - Disposiciones comunes a la importación y a la exportacion - Titulo I: Operaciones de Transbordo (arts. 410 a 416)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S5_TituloI.htm
+
+Seccion V - Disposiciones comunes a la importación y a la exportacion - Titulo II: Despacho de oficio (arts. 417 a 452)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S5_TituloII.htm
+
+Seccion V - Disposiciones comunes a la importación y a la exportacion - Titulo III: Régimes de garantía (arts. 453 a 465)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S5_TituloIII.htm
+
+Seccion VI - Regimenes especiales
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S6.htm
+
+Seccion VII - Areas que no integran el territorio aduanero generales
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S7.htm
+
+Seccion VIII - Prohibiciones a la importación y a la exportación
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S8.htm
+
+Seccion IX - Tributos regidos por la legislacion aduanera - Titulo I: Especies de tributos (arts. 635 a 776)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S9_TituloI.htm
+
+Seccion IX - Tributos regidos por la legislacion aduanera - Titulo II: Disposiciones comunes (arts. 777 a 819)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S9_TituloII.htm
+
+Seccion X - Estimulos a la exportacion
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S10.htm
+
+Seccion XI - Reciprocidad de tratamiento
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S11.htm
+
+Seccion XII - Disposiciones penales - Titulo I: Delitos aduaneros (arts. 860 a 891)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S12_TituloI.htm
+
+Seccion XII - Disposiciones penales - Titulo II: Infracciones aduaneras (arts. 892 a 996)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S12_TituloII.htm
+
+Seccion XIII - Preferencias aduaneras
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S13.htm
+
+Seccion XIV - Procedimientos - Titulo I: Disposiciones generales (arts. 1001 a 1052)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S14_TituloI.htm
+
+Seccion XIV - Procedimientos - Titulo II: Procedimientos especiales (arts. 1053 a 1128)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S14_TituloII.htm
+
+Seccion XIV - Procedimientos - Titulo III: Recursos (arts. 1129 a 1183)
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S14_TituloIII.htm
+
+Seccion XV - Disposiciones complementarias
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S15.htm
+
+Seccion XVI - Disposiciones transitorias
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_S16.htm
+
+Antecedentes normativos
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_antecedentes_normativos.htm
+
+Decreto 70-2023
 https://www.argentina.gob.ar/normativa/nacional/decreto-70-2023-395521/texto
+
+http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16536/Ley22415_Titulo_preliminar.htm
 
 
 ## Imports

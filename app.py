@@ -13,7 +13,7 @@ from modules.vector_database import create_database, database_exists, \
                                     table_exists, connect_to_vector_store
 from modules.indexing_pipeline import IndexingPipeline
 from modules.vectordb_retriever import VectorDBRetriever
-from modules.llm_interaction import call_adubot_prueba1
+from modules.llm_interaction import simple_chat_openai, simple_chat_aws
 
 # config
 from config import db_config, vector_store_config  # Import configuration from the config module
@@ -75,7 +75,7 @@ def initialize_app(app):
             vector_store=vector_store,
             embed_model=embed_model,
             query_mode="default",
-            similarity_top_k=5,
+            similarity_top_k=3,
             db_connection_params=db_args  # unpacked ** into the module
         )
         # LLM api config
@@ -120,7 +120,7 @@ def answer():
         query_bundle = QueryBundle(query_str=query)
         result = retriever._retrieve(query_bundle)        
         
-        response = call_adubot_prueba1(query=query, documents=result)
+        response = simple_chat_openai(query=query, documents=result)
 
         # Log metadata (user_id, session_id, timestamp)
         logger.info(f"Query metadata: {json.dumps(metadata)}")
