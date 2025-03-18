@@ -10,27 +10,99 @@ logger = logging.getLogger(__name__)
 
 # Prompt Template
 template_str = """
-Respecto a la siguiente consulta: {{ query }}
+Respecto a la siguiente consulta: "{{ query }}"
 
-1. Analiza si la misma se requiere a una pregunta general, filtra insultos y evita responder questiones agenas a asustos de normativa aduanera. Si la pregunta es inocente, responde advirtiendo que sos una herramienta profesional, que está ahí para asistir en temas de normativa aduanera.
+**1. Evaluación Inicial:**
+   - Determina si la consulta es una pregunta general o irrelevante para temas aduaneros.
+   - Si la consulta incluye insultos o lenguaje ofensivo, responde educadamente indicando que no puedes procesarla.
+   - Si la pregunta no está relacionada con normativa aduanera, responde indicando que solo puedes proporcionar asistencia en dicho ámbito.
+   - Si la pregunta es ambigua o no está claramente formulada, solicita una reformulación para poder asistir mejor.
 
-2. Si la consulta se refiere a temas aduaneros, para responder, ten encuenta los documentos relevantes obtenidos por el modelo de recuperación, con sus respectivas puntuaciones de relevancia. 
-Como experto en materia aduanera de Argentina, por favor proporciona una respuesta basada en los documentos proporcionados.
+**2. Procesamiento de Documentos Relevantes:**
+   - Si la consulta se refiere a normativa aduanera, revisa los documentos obtenidos del modelo de recuperación.
+   - Cada documento tiene una puntuación de relevancia basada en su coincidencia con la consulta.
 
+{% if documents %}
+   - A continuación, se presentan los documentos más relevantes:
 {% for doc, score in documents %}
-Documento {{ loop.index }}:
-- Título: {{ doc.metadata["doc_title"] }}
-- Fuente: {{ doc.metadata["source_path"] }}
-- Información adicional: {{ doc.metadata["additional_info"] }}
-- Comentarios: {{ doc.metadata["comments"] }}
-- Contenido: {{ doc.text }}
-- Puntuación de Relevancia: {{ 100 * score }}%
+     **Documento {{ loop.index }}:**  
+     - **Título:** {{ doc.metadata["doc_title"] }}  
+     - **Fuente:** {{ doc.metadata["source_path"] }}  
+     - **Sección:** {{ doc.metadata["section"] }}  
+     - **Capítulo:** {{ doc.metadata["chapter"] }}  
+     - **Artículo:** {{ doc.metadata["article"] }}  
+     - **Contenido relevante:**  
+       "{{ doc.text | truncate(300) }}"  
+     - **Puntuación de relevancia:** {{ 100 * score }}%  
 
 {% endfor %}
+{% else %}
+   - No se encontraron documentos relevantes para esta consulta.
+{% endif %}
 
-Si los documentos relevantes tienen un puntaje inferior al 60 %, advertí que es posible que la información no responda certeramente la pregunta. 
-Evita comentarios subjetivos fuera de contexto y no repitas conceptos.
+**3. Generación de Respuesta:**
+   - Redacta la respuesta basándote exclusivamente en los documentos relevantes.
+   - Si los documentos relevantes tienen una puntuación inferior al **50%**, advierte al usuario sobre la posible falta de precisión en la respuesta.
+   - No incluyas información ajena a la normativa aduanera.
+   - Evita repetir conceptos innecesariamente y mantén una respuesta clara y objetiva.
+
 """
+
+def simple_chat_openai(query, documents):
+    """
+    Calls OpenAI client to generate a response based on retrieved documents.
+    """
+    logger.info(f"Calling OpenAI LLM with query: {query}")
+    logger.info(f"Documents retrieved: {documents}")
+
+    # OpenAI API call
+    client = OpenAI()
+    
+    # Convert NodeWithScore objects to (node, score) tuples
+    docs_as_tuples = [(nws.node, nws.score) for nws in documents]
+
+    # Render the prompt
+    template = Template(template_str)
+    prompt = template.render(query=query, documents=docs_as_tuples)
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "Sos un experto en leyes y normativa aduanera de Argentina, listo para asistir a personas que quieran resolver dudas sobre temas aduaneros."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Sos un experto en leyes y normativa aduanera de Argentina. "
+                        "Proporciona respuestas precisas y concisas basadas en la información relevante disponible."
+                    )
+                },
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3,  # Lower temperature for more deterministic responses
+            max_tokens=500,  # Prevent overly long responses
+            top_p=0.9,  # Standard value for probabilistic sampling
+            frequency_penalty=0.0,  # No penalty for repeating words
+            presence_penalty=0.0  # No bias towards new topics
+        )
+
+        # Ensure a valid response exists before accessing message content
+        if response.choices and len(response.choices) > 0:
+            logger.info(f"Response from OpenAI: {response}")
+            return response.choices[0].message.content.strip()
+        else:
+            return "No se pudo generar una respuesta adecuada."
+    except Exception as e:
+        logger.error(f"Error while calling OpenAI API: {e}")
+        return "Ocurrió un error al generar la respuesta. Por favor, intenta nuevamente."
+
 
 # AWS Bedrock setup
 bedrock_runtime = boto3.client(
@@ -73,32 +145,3 @@ def simple_chat_aws(query, documents):
 
     except Exception as e:
         return f"Error in AWS Bedrock call: {str(e)}"
-
-
-def simple_chat_openai(query, documents):
-    logger.info(f"Calling OpenAI LLM with query: {query}")
-    logger.info(f"Documents retrieved: {documents}")
-
-    # OpenAI API call
-    # client = OpenAI(api_key=os.environ['OPENAI_API_KEY']) 
-    # ERROR:__main__:Error in /answer endpoint: Client.__init__() got an unexpected keyword argument 'proxies'
-    client = OpenAI()
-    
-    # Convert NodeWithScore objects to (node, score) tuples
-    docs_as_tuples = [(nws.node, nws.score) for nws in documents]
-
-    # Render the prompt
-    template = Template(template_str)
-    prompt = template.render(query=query, documents=docs_as_tuples)
-
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "Sos un experto en leyes y normativa aduanera de Argentina, listo para asistir a personas que quieran resolver dudas sobre temas aduaneros."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-
-    logger.info(f"Response from OpenAI: {response}")
-
-    return response.choices[0].message.content if response.choices else "No response generated"
