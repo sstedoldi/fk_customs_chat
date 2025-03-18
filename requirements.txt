@@ -16,7 +16,7 @@ llama-index-readers-web==0.2.4
 Flask==3.0.3
 flask-cors==5.0.0
 # OpenAI packages
-openai==1.42.0 #1.66.3
+openai==1.66.3
 # AWS packages
 boto3==1.37.13
 

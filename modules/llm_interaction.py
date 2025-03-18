@@ -10,8 +10,12 @@ logger = logging.getLogger(__name__)
 
 # Prompt Template
 template_str = """
-A continuación se presentan los documentos relevantes obtenidos por el modelo de recuperación, con sus respectivas puntuaciones de relevancia. 
-Como experto en materia aduanera de Argentina, por favor proporciona una respuesta estrictamente basada en los documentos proporcionados.
+Respecto a la siguiente consulta: {{ query }}
+
+1. Analiza si la misma se requiere a una pregunta general, filtra insultos y evita responder questiones agenas a asustos de normativa aduanera. Si la pregunta es inocente, responde advirtiendo que sos una herramienta profesional, que está ahí para asistir en temas de normativa aduanera.
+
+2. Si la consulta se refiere a temas aduaneros, para responder, ten encuenta los documentos relevantes obtenidos por el modelo de recuperación, con sus respectivas puntuaciones de relevancia. 
+Como experto en materia aduanera de Argentina, por favor proporciona una respuesta basada en los documentos proporcionados.
 
 {% for doc, score in documents %}
 Documento {{ loop.index }}:
@@ -24,12 +28,8 @@ Documento {{ loop.index }}:
 
 {% endfor %}
 
-Responde la siguiente consulta, dando referencia sobre los documentos relevantes.
-Si los documentos relevantes tienen un puntaje inferior al 70 %, advertí que es posible que la información no responda certeramente la pregunta. 
-
+Si los documentos relevantes tienen un puntaje inferior al 60 %, advertí que es posible que la información no responda certeramente la pregunta. 
 Evita comentarios subjetivos fuera de contexto y no repitas conceptos.
-
-Consulta: {{ query }}
 """
 
 # AWS Bedrock setup
@@ -94,7 +94,7 @@ def simple_chat_openai(query, documents):
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "Sos un experto en leyes y normativa aduanera de Argentina."},
+            {"role": "system", "content": "Sos un experto en leyes y normativa aduanera de Argentina, listo para asistir a personas que quieran resolver dudas sobre temas aduaneros."},
             {"role": "user", "content": prompt}
         ]
     )

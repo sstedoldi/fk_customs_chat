@@ -102,7 +102,14 @@ def semantic_search():
         query_bundle = QueryBundle(query_str=query)
         result = retriever._retrieve(query_bundle)
         response = [
-            {'node': node_with_score.node, 'score': node_with_score.score}
+            {
+                'node': {
+                    'id': node_with_score.node.id_,
+                    'text': node_with_score.node.text,
+                    'metadata': node_with_score.node.metadata
+                },
+                'score': node_with_score.score
+            }
             for node_with_score in result
         ]
         return jsonify(response), 200
