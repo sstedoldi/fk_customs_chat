@@ -1,7 +1,7 @@
 import os
 
-def config_apis():
-    os.environ['OPENAI_API_KEY'] = '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'
+# def config_apis():
+#     os.environ['OPENAI_API_KEY'] = 'sk-proj-V4Q0IIxnGmaYkAk01QdjuaypMzT3BlbkFJQBUGqwzzw0h7stqID_icDOAavwmGwxi9ofqGy09gYMiKjdZ_-vraeWlfAA'
     
 db_config = {
     "db_def": "postgres",
@@ -11,7 +11,7 @@ db_config = {
     "host": "127.0.0.1", # windows localhost
     "port": "5432",
     "user": "sst",
-    "password": "password",
+    "password": "password", # move to docker secrets
 }
 
 vector_store_config = {

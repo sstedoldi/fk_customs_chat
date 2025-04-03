@@ -8,6 +8,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+OPENAI_API_KEY = open("run/secrets/openai_api_key", "r").read()
+
 # Prompt Template
 template_str = """
 Respecto a la siguiente consulta: "{{ query }}"
@@ -56,7 +58,7 @@ def simple_chat_openai(query, documents):
     logger.info(f"Documents retrieved: {documents}")
 
     # OpenAI API call
-    client = OpenAI()
+    client = OpenAI(api_key=OPENAI_API_KEY)
     
     # Convert NodeWithScore objects to (node, score) tuples
     docs_as_tuples = [(nws.node, nws.score) for nws in documents]
@@ -104,44 +106,44 @@ def simple_chat_openai(query, documents):
         return "Ocurrió un error al generar la respuesta. Por favor, intenta nuevamente."
 
 
-# AWS Bedrock setup
-bedrock_runtime = boto3.client(
-    "bedrock-runtime",
-    region_name=os.getenv("AWS_REGION", "us-east-1")
-)
+# # AWS Bedrock setup
+# bedrock_runtime = boto3.client(
+#     "bedrock-runtime",
+#     region_name=os.getenv("AWS_REGION", "us-east-1")
+# )
 
-def simple_chat_aws(query, documents):
-    """
-    Calls AWS Bedrock's Meta Llama model to generate a response based on retrieved documents.
-    """
-    logger.info(f"Calling AWS LLM with query: {query}")
-    logger.info(f"Documents retrieved: {documents}")
+# def simple_chat_aws(query, documents):
+#     """
+#     Calls AWS Bedrock's Meta Llama model to generate a response based on retrieved documents.
+#     """
+#     logger.info(f"Calling AWS LLM with query: {query}")
+#     logger.info(f"Documents retrieved: {documents}")
 
-    # Convert NodeWithScore objects to (node, score) tuples
-    docs_as_tuples = [(nws.node, nws.score) for nws in documents]
+#     # Convert NodeWithScore objects to (node, score) tuples
+#     docs_as_tuples = [(nws.node, nws.score) for nws in documents]
 
-    # Render the prompt
-    template = Template(template_str)
-    prompt = template.render(query=query, documents=docs_as_tuples)
+#     # Render the prompt
+#     template = Template(template_str)
+#     prompt = template.render(query=query, documents=docs_as_tuples)
 
-    # AWS Bedrock request payload
-    payload = {
-        "prompt": prompt,
-        "max_tokens": 500,
-        "temperature": 0.2,
-        "top_p": 0.9
-    }
+#     # AWS Bedrock request payload
+#     payload = {
+#         "prompt": prompt,
+#         "max_tokens": 500,
+#         "temperature": 0.2,
+#         "top_p": 0.9
+#     }
 
-    try:
-        response = bedrock_runtime.invoke_model(
-            body=json.dumps(payload),
-            modelId="meta.llama3-8b-instruct-v1"
-        )
-        response_body = json.loads(response["body"].read().decode("utf-8"))
+#     try:
+#         response = bedrock_runtime.invoke_model(
+#             body=json.dumps(payload),
+#             modelId="meta.llama3-8b-instruct-v1"
+#         )
+#         response_body = json.loads(response["body"].read().decode("utf-8"))
         
-        logger.info(f"Response from AWS: {response_body}")
+#         logger.info(f"Response from AWS: {response_body}")
         
-        return response_body.get("completion", "No response generated.")
+#         return response_body.get("completion", "No response generated.")
 
-    except Exception as e:
-        return f"Error in AWS Bedrock call: {str(e)}"
+#     except Exception as e:
+#         return f"Error in AWS Bedrock call: {str(e)}"
