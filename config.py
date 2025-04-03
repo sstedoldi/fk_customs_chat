@@ -1,8 +1,5 @@
 import os
 
-# def config_apis():
-#     os.environ['OPENAI_API_KEY'] = 'sk-proj-V4Q0IIxnGmaYkAk01QdjuaypMzT3BlbkFJQBUGqwzzw0h7stqID_icDOAavwmGwxi9ofqGy09gYMiKjdZ_-vraeWlfAA'
-    
 db_config = {
     "db_def": "postgres",
     "db_name": "vector_db", 
