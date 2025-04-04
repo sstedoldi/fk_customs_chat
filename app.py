@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
-import os
 from datetime import datetime
 import logging
 import json
-from sentence_transformers import SentenceTransformer
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core import QueryBundle
 # locals
@@ -13,11 +11,11 @@ from modules.vector_database import create_database, database_exists, \
                                     table_exists, connect_to_vector_store
 from modules.indexing_pipeline import IndexingPipeline
 from modules.vectordb_retriever import VectorDBRetriever
-from modules.llm_interaction import simple_chat_openai, simple_chat_aws
+from modules.llm_interaction import simple_chat_openai#, simple_chat_aws
 
 # config
 from config import db_config, vector_store_config  # Import configuration from the config module
-from config import embed_model_config, config_apis
+from config import embed_model_config
 
 app = Flask(__name__)
 CORS(app)
@@ -75,12 +73,9 @@ def initialize_app(app):
             vector_store=vector_store,
             embed_model=embed_model,
             query_mode="default",
-            similarity_top_k=3,
+            similarity_top_k=5,
             db_connection_params=db_args  # unpacked ** into the module
         )
-        # LLM api config
-        config_apis()
-        logger.info("App initialization complete.")
 
 @app.route('/')
 def index():
@@ -212,4 +207,4 @@ def index_history():
 
 if __name__ == '__main__':
     initialize_app(app)
-    app.run(port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=False)

@@ -18,5 +18,5 @@ flask-cors==5.0.0
 # OpenAI packages
 openai==1.66.3
 # AWS packages
-boto3==1.37.13
+# boto3==1.37.13
 

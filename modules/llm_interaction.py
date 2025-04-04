@@ -1,14 +1,14 @@
 from openai import OpenAI
-import boto3
+# import json
+# import os
 from jinja2 import Template
-import json
-import os
+# import boto3
 
 import logging
 
 logger = logging.getLogger(__name__)
 
-OPENAI_API_KEY = open("run/secrets/openai_api_key", "r").read()
+OPENAI_API_KEY = open("../run/secrets/openai_api_key", "r").read()
 
 # Prompt Template
 template_str = """

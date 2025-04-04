@@ -7,8 +7,8 @@ db_config = {
     # "host": "127.0.0.1", # windows localhost
     "host": "pgvector_db", # docker container name
     "port": "5432",
-    "user": "sst",
-    "password": "password", # move to docker secrets
+    "user": "sst", # superuser
+    "password": "password", # superuser password
 }
 
 vector_store_config = {
