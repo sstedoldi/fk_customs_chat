@@ -5,7 +5,9 @@ WORKDIR /fk_customs_chat
 
 COPY requirements.txt /fk_customs_chat/
 
-RUN python -m pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --upgrade pip 
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /fk_customs_chat/
 
