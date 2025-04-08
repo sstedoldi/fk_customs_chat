@@ -112,3 +112,118 @@ class VectorDBRetriever(BaseRetriever):
         except Exception as e:
             logger.error(f"Error during retrieval: {e}")
             return []
+        
+import numpy as np
+from indexing_pipeline import robust_tokenizer
+
+class HybridRetriever(BaseRetriever):
+    def __init__(self, vector_store, bm25_model, bm25_tokenized_docs, embed_model, 
+                 db_connection_params,
+                 bm25_weight=0.5, vector_weight=0.5, similarity_top_k=5):
+        """
+        :param bm25_model: BM25 model built from document tokens.
+        :param bm25_tokenized_docs: Original tokenized documents list.
+        """
+        self._vector_store = vector_store
+        self._bm25_model = bm25_model
+        self._bm25_tokenized_docs = bm25_tokenized_docs
+        self._embed_model = embed_model
+        self._bm25_weight = bm25_weight
+        self._vector_weight = vector_weight
+        self._similarity_top_k = similarity_top_k
+        self._db_connection_params = db_connection_params
+        self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
+        self._setup_log_table()
+        super().__init__()
+
+    # logging setup done in the app.py
+    @staticmethod
+    def setup_logging(level=logging.ERROR) -> None:
+        """Set up logging configuration."""
+        logging.basicConfig(level=level)
+    # log table iniciation/ connection
+    def _setup_log_table(self) -> None:
+        """Set up the log table if it doesn't exist."""
+        connection = None
+        try:
+            connection = self._connection_pool.getconn()
+            cursor = connection.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS retriever_logs (
+                    id SERIAL PRIMARY KEY,
+                    query TEXT,
+                    result_count INT,
+                    timestamp TIMESTAMP
+                )
+            """)
+            connection.commit()
+            cursor.close()
+        except Exception as e:
+            logger.error(f"Error setting up log table: {e}")
+        finally:
+            if connection:
+                self._connection_pool.putconn(connection)
+    def _log_query(self, query: str, result_count: int) -> None:
+        """Log the query and result count to the database."""
+        connection = None
+        try:
+            connection = self._connection_pool.getconn()
+            cursor = connection.cursor()
+            cursor.execute("""
+                INSERT INTO retriever_logs (query, result_count, timestamp)
+                VALUES (%s, %s, %s)
+            """, (query, result_count, datetime.now()))
+            connection.commit()
+            cursor.close()
+        except Exception as e:
+            logger.error(f"Error logging query: {e}")
+        finally:
+            if connection:
+                self._connection_pool.putconn(connection)
+
+    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+        try:
+            query_str = query_bundle.query_str
+
+            # Dense embedding retrieval:
+            query_embedding = self._embed_model.get_query_embedding(query_str)
+            vector_query = VectorStoreQuery(
+                query_embedding=query_embedding,
+                similarity_top_k=self._similarity_top_k,
+                mode="default",
+            )
+            vector_result = self._vector_store.query(vector_query)
+            vector_scores = np.array(vector_result.similarities) if vector_result.similarities else np.zeros(len(vector_result.nodes))
+            vector_nodes = vector_result.nodes
+
+            # BM25 retrieval:
+            tokenized_query = robust_tokenizer(query_str)
+            # Get BM25 scores from the persistent model.
+            bm25_scores = self._bm25_model.get_scores(tokenized_query)
+            bm25_scores = np.array(bm25_scores)
+
+            # Assuming a one-to-one mapping between BM25 documents and vector nodes
+            # Consider a mapping using document IDs.
+            bm25_nodes = vector_nodes
+
+            # Normalize the scores.
+            if np.max(vector_scores) > 0:
+                vector_scores = vector_scores / np.max(vector_scores)
+            if np.max(bm25_scores) > 0:
+                bm25_scores = bm25_scores / np.max(bm25_scores)
+
+            # Combine the scores.
+            combined_scores = self._vector_weight * vector_scores + self._bm25_weight * bm25_scores
+
+            # Sort and select top K nodes.
+            sorted_indices = combined_scores.argsort()[::-1][:self._similarity_top_k]
+            nodes_with_scores = [NodeWithScore(node=vector_nodes[i], score=combined_scores[i]) for i in sorted_indices]
+
+            # Log the query and result count
+            self._log_query(query_bundle.query_str, len(nodes_with_scores))
+
+            return nodes_with_scores
+
+        except Exception as e:
+            logger.error(f"Error during hybrid retrieval: {e}")
+            return []

@@ -19,3 +19,5 @@ vector_store_config = {
 embed_model_config = {
     "model_name": "jinaai/jina-embeddings-v2-base-es"
 }
+
+bm25_index_file = "docs/bm25_index.json"
