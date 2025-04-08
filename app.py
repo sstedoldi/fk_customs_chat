@@ -65,11 +65,13 @@ def initialize_app(app):
         # Indexing pipeline
         indexing_pipeline = IndexingPipeline(embed_model=embed_model, 
                                              vector_store=vector_store,
-                                             chunk_size=300, 
+                                             # Add overlap
+                                             chunk_size=500,  
                                              db_connection_params=db_args)
         # Retriever pipeline
         VectorDBRetriever.setup_logging(level=logging.INFO)
-        retriever = VectorDBRetriever(
+        # Update to hydrid retriever
+        retriever = VectorDBRetriever( 
             vector_store=vector_store,
             embed_model=embed_model,
             query_mode="default",
