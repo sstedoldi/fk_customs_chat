@@ -12,7 +12,6 @@ error and usage tracking.
 
 from llama_index.core import QueryBundle
 from llama_index.core.retrievers import BaseRetriever
-from llama_index.vector_stores.postgres import PGVectorStore
 from llama_index.core.vector_stores import VectorStoreQuery
 from llama_index.core.schema import NodeWithScore
 from typing import Any, List, Optional
@@ -116,7 +115,7 @@ class VectorDBRetriever(BaseRetriever):
 import numpy as np
 from indexing_pipeline import robust_tokenizer
 
-class HybridRetriever(BaseRetriever):
+class VectorDBHybridRetriever(BaseRetriever):
     def __init__(self, vector_store, bm25_model, bm25_tokenized_docs, embed_model, 
                  db_connection_params,
                  bm25_weight=0.5, vector_weight=0.5, similarity_top_k=5):

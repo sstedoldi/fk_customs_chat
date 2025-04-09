@@ -29,16 +29,16 @@ class IndexingPipeline:
         :param chunk_size: Maximum chunk size for splitting texts.
         :param db_connection_params: Optional dict with DB connection parameters to log indexing events.
         """
-        self.embed_model = embed_model
-        self.vector_store = vector_store
-        self.chunk_size = chunk_size
-        self.chunk_overlap_prop = chunk_overlap_prop
-        self.db_connection_params = db_connection_params
+        self._embed_model = embed_model
+        self._vector_store = vector_store
+        self._chunk_size = chunk_size
+        self._chunk_overlap_prop = chunk_overlap_prop
+        self._db_connection_params = db_connection_params
 
         # If DB connection parameters are provided, initialize a connection pool and set up logging table.
-        if db_connection_params:
+        if self._db_connection_params:
             try:
-                self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **db_connection_params)
+                self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
                 self._setup_indexing_log_table()
             except Exception as e:
                 print(f"Error setting up DB connection pool: {e}")
@@ -93,8 +93,8 @@ class IndexingPipeline:
         """
         try:
             # Text Parsing using SentenceSplitter
-            text_parser = SentenceSplitter(chunk_size=self.chunk_size,
-                                           chunk_overlap=self.chunk_size*self.chunk_overlap_prop//100)
+            text_parser = SentenceSplitter(chunk_size=self._chunk_size,
+                                           chunk_overlap=self._chunk_size*self._chunk_overlap_prop//100)
             text_chunks = []
             doc_idxs = []
 
@@ -122,14 +122,14 @@ class IndexingPipeline:
             # Embedding Text and Adding Nodes to the Vector Store
             for node in nodes:
                 try:
-                    node_embedding = self.embed_model.get_text_embedding(
+                    node_embedding = self._embed_model.get_text_embedding(
                         node.get_content(metadata_mode="all")
                     )
                     node.embedding = node_embedding
                 except Exception as e:
                     print(f"Error embedding text node {node}: {e}")
 
-            self.vector_store.add(nodes)
+            self._vector_store.add(nodes)
 
             # Log the indexing event for the batch of documents
             self._log_indexing_event(documents, extra_metadata)
@@ -267,20 +267,20 @@ class HydridIndexingPipeline:
         :param chunk_size: Maximum chunk size for splitting texts.
         :param db_connection_params: Optional dict with DB connection parameters to log indexing events.
         """
-        self.embed_model = embed_model
-        self.vector_store = vector_store
-        self.chunk_size = chunk_size
-        self.chunk_overlap_prop = chunk_overlap_prop
-        self.db_connection_params = db_connection_params
+        self._embed_model = embed_model
+        self._vector_store = vector_store
+        self._chunk_size = chunk_size
+        self._chunk_overlap_prop = chunk_overlap_prop
+        self._db_connection_params = db_connection_params
 
         self._bm25_documents = []
         self._bm25_tokenized_docs = load_bm25_index()
         self._bm25_model = BM25Okapi(self._bm25_tokenized_docs) if self._bm25_tokenized_docs else None
 
         # If DB connection parameters are provided, initialize a connection pool and set up logging table.
-        if db_connection_params:
+        if self._db_connection_params:
             try:
-                self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **db_connection_params)
+                self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
                 self._setup_indexing_log_table()
             except Exception as e:
                 print(f"Error setting up DB connection pool: {e}")
@@ -335,8 +335,8 @@ class HydridIndexingPipeline:
         """
         try:
             # Text Parsing using SentenceSplitter
-            text_parser = SentenceSplitter(chunk_size=self.chunk_size,
-                                           chunk_overlap=self.chunk_size*self.chunk_overlap_prop//100)
+            text_parser = SentenceSplitter(chunk_size=self._chunk_size,
+                                           chunk_overlap=self._chunk_size*self._chunk_overlap_prop//100)
             text_chunks = []
             doc_idxs = []
 
@@ -374,14 +374,14 @@ class HydridIndexingPipeline:
             # Embedding Text and Adding Nodes to the Vector Store
             for node in nodes:
                 try:
-                    node_embedding = self.embed_model.get_text_embedding(
+                    node_embedding = self._embed_model.get_text_embedding(
                         node.get_content(metadata_mode="all")
                     )
                     node.embedding = node_embedding
                 except Exception as e:
                     print(f"Error embedding text node {node}: {e}")
 
-            self.vector_store.add(nodes)
+            self._vector_store.add(nodes)
 
             # Log the indexing event for the batch of documents
             self._log_indexing_event(documents, extra_metadata)

@@ -9,8 +9,8 @@ from llama_index.core import QueryBundle
 from modules.vector_database import create_database, database_exists, \
                                     connect_to_database, create_vector_store, \
                                     table_exists, connect_to_vector_store
-from modules.indexing_pipeline import IndexingPipeline
-from modules.vectordb_retriever import VectorDBRetriever
+from modules.indexing_pipeline import IndexingPipeline, HydridIndexingPipeline
+from modules.vectordb_retriever import VectorDBRetriever, VectorDBHybridRetriever
 from modules.llm_interaction import simple_chat_openai#, simple_chat_aws
 
 # config
@@ -63,18 +63,33 @@ def initialize_app(app):
         db_args.pop('db_def')  # not needed for SimpleConnectionPool
         db_args.update({'dbname': db_args.pop('db_name')}) # to run SimpleConnectionPool
         # Indexing pipeline
-        indexing_pipeline = IndexingPipeline(embed_model=embed_model, 
-                                             vector_store=vector_store,
-                                             # Add overlap
-                                             chunk_size=500,  
-                                             db_connection_params=db_args)
+        # indexing_pipeline = IndexingPipeline(embed_model=embed_model, 
+        #                                      vector_store=vector_store,
+        #                                      chunk_size=500,
+        #                                      chunk_overlap_prop=10,  
+        #                                      db_connection_params=db_args)        
+        indexing_pipeline = HydridIndexingPipeline(embed_model=embed_model,
+                                                   vector_store=vector_store,
+                                                   chunk_size=512,
+                                                   chunk_overlap_prop=10,
+                                                   db_connection_params=db_args)
         # Retriever pipeline
-        VectorDBRetriever.setup_logging(level=logging.INFO)
-        # Update to hydrid retriever
-        retriever = VectorDBRetriever( 
+        # VectorDBRetriever.setup_logging(level=logging.INFO)
+        # retriever = VectorDBRetriever( 
+        #     vector_store=vector_store,
+        #     embed_model=embed_model,
+        #     query_mode="default",
+        #     similarity_top_k=5,
+        #     db_connection_params=db_args  # unpacked ** into the module
+        # )
+        VectorDBHybridRetriever.setup_logging(level=logging.INFO)
+        retriever = VectorDBHybridRetriever( 
             vector_store=vector_store,
+            bm25_model=indexing_pipeline._bm25_model,
+            bm25_tokenized_docs=indexing_pipeline._bm25_tokenized_docs,
             embed_model=embed_model,
-            query_mode="default",
+            bm25_weight=0.5,
+            vector_weight=0.5,
             similarity_top_k=5,
             db_connection_params=db_args  # unpacked ** into the module
         )
@@ -162,8 +177,14 @@ def index_documents():
         else:
             return jsonify({'error': 'Invalid source_type provided'}), 400
 
-        indexing_pipeline.document_processing(documents, extra_metadata=metadata)
-        return jsonify({'message': 'Indexing completed successfully'}), 200
+        if documents is None or len(documents) == 0:
+            return jsonify({'error': 'No documents found or invalid source_path'}), 450
+        else:
+            indexing_pipeline.document_processing(documents, extra_metadata=metadata)
+            # retriever BM25 update
+            retriever._bm25_model = indexing_pipeline._bm25_model
+            retriever._bm25_tokenized_docs = indexing_pipeline._bm25_tokenized_docs
+            return jsonify({'message': 'Indexing completed successfully'}), 200
 
     except Exception as e:
         logger.error(f"Error in /index endpoint: {e}")
