@@ -113,8 +113,20 @@ class VectorDBRetriever(BaseRetriever):
             return []
         
 import numpy as np
+import json
 from indexing_pipeline import robust_tokenizer
 
+def serialize_node(node_with_score):
+    """
+    Convert a NodeWithScore object to a dictionary representation.
+    Modify this function if you want to log additional/specific attributes.
+    """
+    node = node_with_score.node
+    return {
+        "document_id": getattr(node, "document_id", None),
+        "chunk_id": getattr(node, "chunk_id", None),
+        "score": node_with_score.score
+    }
 class VectorDBHybridRetriever(BaseRetriever):
     def __init__(self, vector_store, bm25_model, bm25_tokenized_docs, embed_model, 
                  db_connection_params,
@@ -131,18 +143,30 @@ class VectorDBHybridRetriever(BaseRetriever):
         self._vector_weight = vector_weight
         self._similarity_top_k = similarity_top_k
         self._db_connection_params = db_connection_params
-        self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
+        
+        # Set up a connection pool for logging.
+        try:
+            self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
+        except Exception as e:
+            logger.error(f"Error setting up DB connection pool: {e}")
+            self._connection_pool = None
+
         self._setup_log_table()
         super().__init__()
 
-    # logging setup done in the app.py
     @staticmethod
     def setup_logging(level=logging.ERROR) -> None:
         """Set up logging configuration."""
         logging.basicConfig(level=level)
-    # log table iniciation/ connection
+
     def _setup_log_table(self) -> None:
-        """Set up the log table if it doesn't exist."""
+        """
+        Set up the log table if it doesn't exist.
+        The table now includes a result_nodes column to store the serialized retrieved nodes.
+        """
+        if not self._connection_pool:
+            return
+
         connection = None
         try:
             connection = self._connection_pool.getconn()
@@ -151,7 +175,7 @@ class VectorDBHybridRetriever(BaseRetriever):
                 CREATE TABLE IF NOT EXISTS retriever_logs (
                     id SERIAL PRIMARY KEY,
                     query TEXT,
-                    result_count INT,
+                    result_nodes JSONB,
                     timestamp TIMESTAMP
                 )
             """)
@@ -162,16 +186,27 @@ class VectorDBHybridRetriever(BaseRetriever):
         finally:
             if connection:
                 self._connection_pool.putconn(connection)
-    def _log_query(self, query: str, result_count: int) -> None:
-        """Log the query and result count to the database."""
+
+    def _log_query(self, query: str, retrieved_nodes: list) -> None:
+        """
+        Log the query and the serialized list of retrieved nodes to the database.
+        
+        :param query: The original query string.
+        :param retrieved_nodes: List of NodeWithScore objects.
+        """
+        if not self._connection_pool:
+            return
+
+        # Serialize the nodes to a JSON string.
+        serialized_nodes = json.dumps([serialize_node(node_with_score) for node_with_score in retrieved_nodes])
         connection = None
         try:
             connection = self._connection_pool.getconn()
             cursor = connection.cursor()
             cursor.execute("""
-                INSERT INTO retriever_logs (query, result_count, timestamp)
+                INSERT INTO retriever_logs (query, result_nodes, timestamp)
                 VALUES (%s, %s, %s)
-            """, (query, result_count, datetime.now()))
+            """, (query, serialized_nodes, datetime.now()))
             connection.commit()
             cursor.close()
         except Exception as e:
@@ -180,47 +215,72 @@ class VectorDBHybridRetriever(BaseRetriever):
             if connection:
                 self._connection_pool.putconn(connection)
 
-    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+    def _retrieve(self, query_bundle: QueryBundle) -> list:
+        """
+        Retrieves relevant nodes for the query by combining BM25 and vector search.
+        Results are aggregated by document using the document_id attribute.
+        """
         try:
             query_str = query_bundle.query_str
 
-            # Dense embedding retrieval:
+            # --- Vector Retrieval ---
+            # Obtain the query embedding and query the vector store.
             query_embedding = self._embed_model.get_query_embedding(query_str)
             vector_query = VectorStoreQuery(
                 query_embedding=query_embedding,
-                similarity_top_k=self._similarity_top_k,
+                similarity_top_k=self._similarity_top_k*2, # double the embedding retrive
                 mode="default",
             )
             vector_result = self._vector_store.query(vector_query)
-            vector_scores = np.array(vector_result.similarities) if vector_result.similarities else np.zeros(len(vector_result.nodes))
             vector_nodes = vector_result.nodes
+            vector_scores = np.array(vector_result.similarities) if vector_result.similarities else np.zeros(len(vector_nodes))
 
-            # BM25 retrieval:
+            # --- BM25 Retrieval ---
             tokenized_query = robust_tokenizer(query_str)
-            # Get BM25 scores from the persistent model.
-            bm25_scores = self._bm25_model.get_scores(tokenized_query)
-            bm25_scores = np.array(bm25_scores)
+            # Get BM25 scores for all indexed chunks.
+            bm25_scores = (np.array(self._bm25_model.get_scores(tokenized_query)) 
+                           if self._bm25_model is not None 
+                           else np.zeros(len(self._bm25_tokenized_docs)))
 
-            # Assuming a one-to-one mapping between BM25 documents and vector nodes
-            # Consider a mapping using document IDs.
-            bm25_nodes = vector_nodes
-
-            # Normalize the scores.
+            # --- Normalize Scores ---
             if np.max(vector_scores) > 0:
                 vector_scores = vector_scores / np.max(vector_scores)
             if np.max(bm25_scores) > 0:
                 bm25_scores = bm25_scores / np.max(bm25_scores)
 
-            # Combine the scores.
+            # --- Combine Scores ---
+            # Here we assume that the order of BM25 scores corresponds to the order of nodes in the vector store.
             combined_scores = self._vector_weight * vector_scores + self._bm25_weight * bm25_scores
 
-            # Sort and select top K nodes.
-            sorted_indices = combined_scores.argsort()[::-1][:self._similarity_top_k]
-            nodes_with_scores = [NodeWithScore(node=vector_nodes[i], score=combined_scores[i]) for i in sorted_indices]
+            # --- Grouping by Document ---
+            # Use each node's document_id (set during indexing) to group scores.
+            doc_score_map = {}
+            doc_node_map = {}
+            for i, node in enumerate(vector_nodes):
+                doc_id = getattr(node, "document_id", None)
+                if doc_id is None:
+                    continue  # Skip nodes with missing document_id.
+                score = combined_scores[i]
+                if doc_id not in doc_score_map or score > doc_score_map[doc_id]:
+                    doc_score_map[doc_id] = score
+                    doc_node_map[doc_id] = node
 
-            # Log the query and result count
-            self._log_query(query_bundle.query_str, len(nodes_with_scores))
+            # --- Sorting and Selecting Top K Documents ---
+            aggregated_results = [
+                (doc_id, doc_node_map[doc_id], doc_score_map[doc_id])
+                for doc_id in doc_score_map
+            ]
+            aggregated_results.sort(key=lambda x: x[2], reverse=True)
+            top_results = aggregated_results[:self._similarity_top_k]
 
+            # Create NodeWithScore objects for the results.
+            nodes_with_scores = [
+                NodeWithScore(node=node, score=score)
+                for _, node, score in top_results
+            ]
+
+            # Log the query along with the serialized list of node details.
+            self._log_query(query_str, nodes_with_scores)
             return nodes_with_scores
 
         except Exception as e:

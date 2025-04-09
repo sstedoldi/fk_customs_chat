@@ -1,9 +1,11 @@
+################
+# general
+numpy==2.2.4
 #################
 # pytorch locally
 # torch==2.5.0
 # torchvision==0.20.0
 # torchaudio==2.5.0
-numpy==2.2.4
 ######################
 # llama-index packages
 llama-index==0.11.18
@@ -14,7 +16,8 @@ llama-index-embeddings-huggingface==0.3.1
 accelerate==1.5.0
 llama-index-readers-web==0.2.4
 nltk==3.9.1
-rank-bm25==0.2.2
+PyStemmer==2.2.0.3
+# rank-bm25==0.2.2
 ################
 # flask packages
 Flask==3.0.3
