@@ -8,7 +8,6 @@ also logs the indexing events to a dedicated table in the vector database,
 including metadata such as the indexing date, source, and document type.
 """
 
-import config
 import json
 import os
 from datetime import datetime
@@ -20,31 +19,21 @@ from llama_index.readers.web import SimpleWebPageReader # to improve extracting 
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import TextNode
 # from llama_index.retrievers.bm25 import BM25Retriever
-from bm25 import BM25Retriever
-import Stemmer
-# from nltk.tokenize import word_tokenize
+from modules.bm25 import BM25Retriever
 from uuid import uuid4
 
-# import string
-
-# def robust_tokenizer(text: str) -> list:
-#     """
-#     Tokenizes the text using nltk.word_tokenize and filters out punctuation.
-
-#     :param text: The input text to tokenize.
-#     :return: A list of tokenized and lowercased words.
-#     """
-#     # Use nltk to tokenize text
-#     tokens = word_tokenize(text)
-#     # Convert tokens to lowercase and remove punctuation tokens
-#     tokens = [token.lower() for token in tokens if token not in string.punctuation]
-
-#     return tokens
-
 class HydridIndexingPipeline:
-    def __init__(self, embed_model, vector_store, bm25_model=None, 
-                 chunk_size=512, chunk_overlap_prop=10,
-                 db_connection_params=None):
+    def __init__(self, 
+                 embed_model, 
+                 vector_store,  
+                 chunk_size=512, 
+                 chunk_overlap_prop=10,
+                 db_connection_params=None,
+                 bm25_model=None,
+                 bm25_path="",
+                 bm25_verbose=True,
+                 language="english",
+                 ):
         """
         :param embed_model: Embedding model to embed text.
         :param vector_store: Vector store to add nodes.
@@ -56,9 +45,22 @@ class HydridIndexingPipeline:
         self._chunk_size = chunk_size
         self._chunk_overlap_prop = chunk_overlap_prop
         self._db_connection_params = db_connection_params
+        self._bm25_path = bm25_path # this path must help to persist bm25 models
+        self._bm25_verbose = bm25_verbose
+        self._language = language # ["spanish", "es"] or ["english", "en", True] for bm25 stopwords
 
         if bm25_model is not None:
             self._bm25_retriever = bm25_model
+        else:
+            if os.path.exists(self._bm25_path):
+                try:
+                    self._bm25_retriever = BM25Retriever.from_persist_dir(self._bm25_path)
+                    print("Loaded BM25 model from persistent storage.")
+                except Exception as e:
+                    print(f"Error loading BM25 model from storage: {e}")
+                    self._bm25_retriever = None
+            else:
+                self._bm25_retriever = None  # It can be created once you have nodes to index
 
         if self._db_connection_params:
             try:
@@ -154,19 +156,48 @@ class HydridIndexingPipeline:
             # Embed text for each node and add embeddings
             for node in nodes:
                 try:
-                    node_embedding = self._embed_model.get_text_embedding(node.get_content(metadata_mode="all"))
+                    node_embedding = self._embed_model.get_text_embedding(
+                        node.get_content(metadata_mode="all")
+                        )
                     node.embedding = node_embedding
                 except Exception as e:
                     print(f"Error embedding text node {node.chunk_id}: {e}")
 
-            # Add all nodes (with chunk and document IDs) to the vector store
+            # Add all nodes to the vector store
             self._vector_store.add(nodes)
+            print("Vector store updated with new nodes")
 
-            # Log one indexing event per original document using document IDs as primary keys
+            # Log indexing event for each document
             self._log_indexing_event(documents, extra_metadata)
+            print("Indexing event logged")
 
-            ###############
-            ### BM25 update
+            # BM25 update
+            if self._bm25_retriever is not None:
+                try:
+                    # BM25 update if exists already
+                    self._bm25_retriever.update_index(
+                        nodes, 
+                        language=self._language,
+                        verbose=self._bm25_retriever.verbose
+                        )
+                    os.makedirs(self._bm25_path, exist_ok=True)
+                    self._bm25_retriever.persist(self._bm25_path)
+                    print(f"BM25 index updated and model persisted to {self._bm25_path}")
+                except Exception as e:
+                    print(f"Error updating BM25 index: {e}")
+            else:
+                # BM25 instantiate if not exists already
+                try:
+                    self._bm25_retriever = BM25Retriever(
+                        nodes=nodes,
+                        language=self._language,
+                        verbose=self._bm25_verbose
+                    )
+                    os.makedirs(self._bm25_path, exist_ok=True)
+                    self._bm25_retriever.persist(self._bm25_path)
+                    print(f"BM25 index created and model persisted to {self._bm25_path}")
+                except Exception as e:
+                    print(f"Error creating BM25 retriever: {e}")
 
         except Exception as e:
             print(f"Error processing documents: {e}")
@@ -185,7 +216,7 @@ class HydridIndexingPipeline:
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS indexing_logs (
                     id SERIAL PRIMARY KEY,
-                    document_id TEXT PRIMARY KEY,
+                    document_id TEXT UNIQUE,
                     doc_title TEXT,
                     source_path TEXT,
                     source_type TEXT,

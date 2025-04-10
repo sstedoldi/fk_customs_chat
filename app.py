@@ -9,8 +9,8 @@ from llama_index.core import QueryBundle
 from modules.vector_database import create_database, database_exists, \
                                     connect_to_database, create_vector_store, \
                                     table_exists, connect_to_vector_store
-from modules.indexing_pipeline import IndexingPipeline, HydridIndexingPipeline
-from modules.vectordb_retriever import VectorDBRetriever, VectorDBHybridRetriever
+from modules.indexing_pipeline import HydridIndexingPipeline#, IndexingPipeline
+from modules.vectordb_retriever import HybridRetriever#, VectorDBRetriever
 from modules.llm_interaction import simple_chat_openai#, simple_chat_aws
 
 # config
@@ -72,7 +72,11 @@ def initialize_app(app):
                                                    vector_store=vector_store,
                                                    chunk_size=512,
                                                    chunk_overlap_prop=10,
-                                                   db_connection_params=db_args)
+                                                   db_connection_params=db_args,
+                                                   bm25_model=None, # creating new model
+                                                   bm25_path="models/bm25_model",
+                                                   bm25_verbose=True,
+                                                   language="spanish")
         # Retriever pipeline
         # VectorDBRetriever.setup_logging(level=logging.INFO)
         # retriever = VectorDBRetriever( 
@@ -82,15 +86,16 @@ def initialize_app(app):
         #     similarity_top_k=5,
         #     db_connection_params=db_args  # unpacked ** into the module
         # )
-        VectorDBHybridRetriever.setup_logging(level=logging.INFO)
-        retriever = VectorDBHybridRetriever( 
+        HybridRetriever._setup_logging(level=logging.INFO)
+        retriever = HybridRetriever( 
             vector_store=vector_store,
-            bm25_model=indexing_pipeline._bm25_model,
-            bm25_tokenized_docs=indexing_pipeline._bm25_tokenized_docs,
             embed_model=embed_model,
-            bm25_weight=0.5,
-            vector_weight=0.5,
+            bm25_retriever=indexing_pipeline._bm25_retriever,
             similarity_top_k=5,
+            dense_top_k=10,
+            bm25_top_k=10,
+            bm25_weight=0.5,
+            dense_weight=0.5,
             db_connection_params=db_args  # unpacked ** into the module
         )
 
@@ -165,6 +170,7 @@ def index_documents():
                     "additional_info" : str(additional_info),
                     "comments" : str(comments)}
 
+        print()
         if not source_type or not source_path:
             return jsonify({'error': 'source_type and source_path are required'}), 400
 
@@ -180,10 +186,10 @@ def index_documents():
         if documents is None or len(documents) == 0:
             return jsonify({'error': 'No documents found or invalid source_path'}), 450
         else:
+
             indexing_pipeline.document_processing(documents, extra_metadata=metadata)
-            # retriever BM25 update
-            retriever._bm25_model = indexing_pipeline._bm25_model
-            retriever._bm25_tokenized_docs = indexing_pipeline._bm25_tokenized_docs
+            # updating bm25 retriever model
+            retriever._bm25_retriever = indexing_pipeline._bm25_retriever
             return jsonify({'message': 'Indexing completed successfully'}), 200
 
     except Exception as e:
@@ -201,7 +207,7 @@ def index_history():
         cursor = connection.cursor()
 
         cursor.execute("""
-            SELECT doc_title, source_path, source_type, indexed_date, metadata
+            SELECT id, document_id, doc_title, source_path, source_type, indexed_date, metadata
             FROM indexing_logs
             ORDER BY indexed_date DESC
             LIMIT 50;
@@ -210,11 +216,13 @@ def index_history():
         history = []
         for row in cursor.fetchall():
             history.append({
-                "doc_title": row[0],
-                "source_path": row[1],
-                "source_type": row[2],
-                "indexed_date": row[3].isoformat(),
-                "metadata": row[4]
+                "id": row[0],
+                "document_id": row[1],
+                "doc_title": row[2],
+                "source_path": row[3],
+                "source_type": row[4],
+                "indexed_date": row[5].isoformat(),
+                "metadata": row[6]
             })
 
         cursor.close()

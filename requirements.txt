@@ -1,6 +1,6 @@
 ################
 # general
-numpy==2.2.4
+# numpy==2.2.4
 #################
 # pytorch locally
 # torch==2.5.0
@@ -15,9 +15,10 @@ llama-index-vector-stores-postgres==0.2.6
 llama-index-embeddings-huggingface==0.3.1
 accelerate==1.5.0
 llama-index-readers-web==0.2.4
-nltk==3.9.1
-PyStemmer==2.2.0.3
+# nltk==3.9.1
 # rank-bm25==0.2.2
+bm25s==0.2.10
+PyStemmer==2.2.0.3
 ################
 # flask packages
 Flask==3.0.3
