@@ -5,14 +5,15 @@ import logging
 import json
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core import QueryBundle
+# from llama_index.core.node_parser import SentenceSplitter
+from modules.sentence import SentenceSplitter
 # locals
-from modules.vector_database import create_database, database_exists, \
+from vector_database import create_database, database_exists, \
                                     connect_to_database, create_vector_store, \
                                     table_exists, connect_to_vector_store
-from modules.indexing_pipeline import HydridIndexingPipeline#, IndexingPipeline
-from modules.vectordb_retriever import HybridRetriever#, VectorDBRetriever
-from modules.llm_interaction import simple_chat_openai#, simple_chat_aws
-
+from indexing_pipeline import HydridIndexingPipeline#, IndexingPipeline
+from vectordb_retriever import HybridRetriever#, VectorDBRetriever
+from llm_interaction import simple_chat_openai#, simple_chat_aws
 # config
 from config import db_config, vector_store_config  # Import configuration from the config module
 from config import embed_model_config
@@ -70,8 +71,8 @@ def initialize_app(app):
         #                                      db_connection_params=db_args)        
         indexing_pipeline = HydridIndexingPipeline(embed_model=embed_model,
                                                    vector_store=vector_store,
-                                                   chunk_size=512,
-                                                   chunk_overlap_prop=10,
+                                                   chunk_size=400,
+                                                   chunk_overlap=40,
                                                    db_connection_params=db_args,
                                                    bm25_model=None, # creating new model
                                                    bm25_path="models/bm25_model",
@@ -98,6 +99,25 @@ def initialize_app(app):
             dense_weight=0.5,
             db_connection_params=db_args  # unpacked ** into the module
         )
+        # Testing SentenceSplitter
+        text = """
+            # INDEXING PIPELINE
+            Defines an IndexingPipeline class that provides methods to read documents
+            from various sources (PDF files, webpages, and directories) and processes
+            them by splitting the text into chunks, embedding the chunks using a 
+            provided embedding model, and adding them to a vector store. This version
+            also logs the indexing events to a dedicated table in the vector database,
+            including metadata such as the indexing date, source, and document type.
+            """
+        print(text)
+        text_parser = SentenceSplitter(chunk_size=20,
+                                       chunk_overlap=2
+                                        # chunk_overlap=4,
+                                    #    tokenizer=self._robust_tokenizer
+                                        )
+        print(f"Text parser: {text_parser}")
+        chunks = text_parser.split_text(text)
+        print(f"Chunks test: {chunks}")
 
 @app.route('/')
 def index():
@@ -170,7 +190,7 @@ def index_documents():
                     "additional_info" : str(additional_info),
                     "comments" : str(comments)}
 
-        print()
+        print(f"Document metadata to index: {metadata}")
         if not source_type or not source_path:
             return jsonify({'error': 'source_type and source_path are required'}), 400
 
@@ -186,7 +206,6 @@ def index_documents():
         if documents is None or len(documents) == 0:
             return jsonify({'error': 'No documents found or invalid source_path'}), 450
         else:
-
             indexing_pipeline.document_processing(documents, extra_metadata=metadata)
             # updating bm25 retriever model
             retriever._bm25_retriever = indexing_pipeline._bm25_retriever

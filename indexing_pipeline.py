@@ -16,18 +16,21 @@ from psycopg2 import pool as pg_pool
 from llama_index.core import SimpleDirectoryReader
 from llama_index.readers.file import PyMuPDFReader
 from llama_index.readers.web import SimpleWebPageReader # to improve extracting more metadata
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import TextNode
+# from llama_index.core.node_parser import SentenceSplitter
+from modules.sentence import SentenceSplitter
 # from llama_index.retrievers.bm25 import BM25Retriever
 from modules.bm25 import BM25Retriever
 from uuid import uuid4
+# from nltk.tokenize import word_tokenize
+# import string
 
 class HydridIndexingPipeline:
     def __init__(self, 
                  embed_model, 
                  vector_store,  
                  chunk_size=512, 
-                 chunk_overlap_prop=10,
+                 chunk_overlap=50,
                  db_connection_params=None,
                  bm25_model=None,
                  bm25_path="",
@@ -43,11 +46,14 @@ class HydridIndexingPipeline:
         self._embed_model = embed_model
         self._vector_store = vector_store
         self._chunk_size = chunk_size
-        self._chunk_overlap_prop = chunk_overlap_prop
+        self._chunk_overlap = chunk_overlap
         self._db_connection_params = db_connection_params
         self._bm25_path = bm25_path # this path must help to persist bm25 models
         self._bm25_verbose = bm25_verbose
         self._language = language # ["spanish", "es"] or ["english", "en", True] for bm25 stopwords
+
+        self._text_parser = SentenceSplitter(chunk_size=self._chunk_size,
+                                             chunk_overlap=self._chunk_overlap)
 
         if bm25_model is not None:
             self._bm25_retriever = bm25_model
@@ -111,6 +117,20 @@ class HydridIndexingPipeline:
             print(f"Error reading directory {directory_path}: {e}")
             return []
 
+    # def _robust_tokenizer(text: str) -> list:
+    #     """
+    #     Tokenizes the text using nltk.word_tokenize and filters out punctuation.
+
+    #     :param text: The input text to tokenize.
+    #     :return: A list of tokenized and lowercased words.
+    #     """
+    #     # Use nltk to tokenize text
+    #     tokens = word_tokenize(text)
+    #     # Convert tokens to lowercase and remove punctuation tokens
+    #     tokens = [token.lower() for token in tokens if token not in string.punctuation]
+
+    #     return tokens
+
     def document_processing(self, documents, extra_metadata=None):
         """
         Processes documents by splitting text into chunks, embedding them, and 
@@ -123,23 +143,28 @@ class HydridIndexingPipeline:
         try:
             # Ensure unique document_ids
             for doc in documents:
-                doc.doc_id = str(uuid4())
+                doc.id_ = str(uuid4())
+            print(f"Document IDs added: {str([doc.id_ for doc in documents])}")
 
-            # Text Parsing using SentenceSplitter
-            text_parser = SentenceSplitter(chunk_size=self._chunk_size,
-                                           chunk_overlap=self._chunk_size*self._chunk_overlap_prop//100)
+            # text_parser = SentenceSplitter(chunk_size=self._chunk_size,
+            #                                chunk_overlap=self._chunk_overlap)
+            # print(f"Text parser: {text_parser}")
 
             # Creating Nodes with Merged IDs & Metadata
             nodes = []
 
             # Process each document to create nodes with proper IDs
             for doc in documents:
-                chunks = text_parser.split_text(doc.text)
+                chunks = self._text_parser.split_text(doc.text)
+                print(f"Chunks to process: {chunks}")
+
                 for i, chunk in enumerate(chunks):
+                    print(f"Chunk {i}: {chunk} ")
                     node = TextNode(text=chunk)
+                    print(f"Node {i}: {node} ")
                     # Assign document and chunk IDs
-                    node.document_id = doc.doc_id
-                    node.chunk_id = f"{doc.doc_id}-{i+1}"
+                    node.document_id = doc.id_
+                    node.chunk_id = f"{doc.id_}-{i+1}"
                     
                     # Merge source document metadata with any extra metadata
                     metadata = doc.metadata.copy() if doc.metadata else {}
@@ -154,12 +179,13 @@ class HydridIndexingPipeline:
                     nodes.append(node)
 
             # Embed text for each node and add embeddings
-            for node in nodes:
+            for j, node in enumerate(nodes):
                 try:
                     node_embedding = self._embed_model.get_text_embedding(
                         node.get_content(metadata_mode="all")
                         )
                     node.embedding = node_embedding
+                    print(f"Node {j} with embedding: {node} ")
                 except Exception as e:
                     print(f"Error embedding text node {node.chunk_id}: {e}")
 
