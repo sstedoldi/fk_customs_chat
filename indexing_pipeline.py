@@ -140,11 +140,13 @@ class HydridIndexingPipeline:
         :param extra_metadata: Optional dictionary with additional metadata 
                                (e.g., {"source_path": "path/to/file", "source_type": "pdf"}).
         """
+        print("!document_processing")
         try:
-            # Ensure unique document_ids
-            for doc in documents:
-                doc.id_ = str(uuid4())
-            print(f"Document IDs added: {str([doc.id_ for doc in documents])}")
+            # # Ensure unique document_ids
+            # for doc in documents:
+            #     doc.id_ = str(uuid4())
+
+            print(f"Document IDs to process: {str([doc.id_ for doc in documents])}")
 
             # text_parser = SentenceSplitter(chunk_size=self._chunk_size,
             #                                chunk_overlap=self._chunk_overlap)

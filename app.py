@@ -206,10 +206,11 @@ def index_documents():
         if documents is None or len(documents) == 0:
             return jsonify({'error': 'No documents found or invalid source_path'}), 450
         else:
+            print("document_processing...")
             indexing_pipeline.document_processing(documents, extra_metadata=metadata)
             # updating bm25 retriever model
             retriever._bm25_retriever = indexing_pipeline._bm25_retriever
-            return jsonify({'message': 'Indexing completed successfully'}), 200
+            return jsonify({'message': 'Indexing completed'}), 200
 
     except Exception as e:
         logger.error(f"Error in /index endpoint: {e}")
