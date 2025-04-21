@@ -177,6 +177,7 @@ def answer():
 
 @app.route('/index', methods=['POST'])
 def index_documents():
+    print("index_documents...")
     try:
         data = request.get_json()
         source_type = data.get('source_type')
@@ -213,6 +214,7 @@ def index_documents():
             return jsonify({'message': 'Indexing completed'}), 200
 
     except Exception as e:
+        print(f"Error in /index endpoint: {e}")
         logger.error(f"Error in /index endpoint: {e}")
         return jsonify({'error': 'An error occurred during indexing'}), 500
 
@@ -258,4 +260,4 @@ def index_history():
 
 if __name__ == '__main__':
     initialize_app(app)
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True, use_reloader=False)
