@@ -22,104 +22,6 @@ import json
 
 logger = logging.getLogger(__name__)
 
-class VectorDBRetriever(BaseRetriever):
-    """Retriever over a postgres vector store."""
-
-    def __init__(self, **kwargs) -> None:
-        """Init params."""
-        self._vector_store = kwargs.get('vector_store')
-        self._embed_model = kwargs.get('embed_model')
-        self._query_mode = kwargs.get('query_mode', 'default')
-        self._similarity_top_k = kwargs.get('similarity_top_k', 5)
-        self._db_connection_params = kwargs.get('db_connection_params')
-        self._connection_pool = pg_pool.SimpleConnectionPool(1, 10, **self._db_connection_params)
-        self._setup_log_table()
-        super().__init__()
-
-    # logging setup done in the app.py
-    @staticmethod
-    def setup_logging(level=logging.ERROR) -> None:
-        """Set up logging configuration."""
-        logging.basicConfig(level=level)
-
-    # log table iniciation/ connection
-    def _setup_log_table(self) -> None:
-        """Set up the logging table if it doesn’t already exist."""
-        connection = None
-        try:
-            connection = self._connection_pool.getconn()
-            cursor = connection.cursor()
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS retriever_logs (
-                    id SERIAL PRIMARY KEY,
-                    query TEXT,
-                    result_count INT,
-                    results JSONB,
-                    timestamp TIMESTAMP
-                )
-            """)
-            connection.commit()
-            cursor.close()
-        except Exception as e:
-            logger.error(f"Error setting up log table: {e}")
-        finally:
-            if connection:
-                self._connection_pool.putconn(connection)
-
-    def _log_query(self, query: str, result_count: int, results: str) -> None:
-        """Log the query, result count, and actual results to the database."""
-        connection = None
-        try:
-            connection = self._connection_pool.getconn()
-            cursor = connection.cursor()
-            cursor.execute("""
-                INSERT INTO retriever_logs (query, result_count, results, timestamp)
-                VALUES (%s, %s, %s, %s)
-            """, (query, result_count, results, datetime.now()))
-            connection.commit()
-            cursor.close()
-        except Exception as e:
-            logger.error(f"Error logging query: {e}")
-        finally:
-            if connection:
-                self._connection_pool.putconn(connection)
-
-    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
-        """Retrieve."""
-        try:
-            # Get the query embedding
-            query_embedding = self._embed_model.get_query_embedding(
-                query_bundle.query_str
-            )
-            # Create a vector store query
-            vector_store_query = VectorStoreQuery(
-                query_embedding=query_embedding,
-                similarity_top_k=self._similarity_top_k,
-                mode=self._query_mode,
-            )
-            # Query the vector store
-            query_result = self._vector_store.query(vector_store_query)
-
-            nodes_with_scores = []
-            for index, node in enumerate(query_result.nodes):
-                score: Optional[float] = None
-                if query_result.similarities is not None:
-                    score = query_result.similarities[index]
-                nodes_with_scores.append(NodeWithScore(node=node, score=score))
-
-            # Log the query and result count
-            self._log_query(query_bundle.query_str, len(nodes_with_scores))
-
-            return nodes_with_scores
-
-        except Exception as e:
-            logger.error(f"Error during retrieval: {e}")
-            return []
-
-# import numpy as np
-# import json
-# from indexing_pipeline import robust_tokenizer
-
 class HybridRetriever(BaseRetriever):
     """Hybrid Retriever combining dense vector store retrieval and BM25 retrieval."""
 
@@ -182,7 +84,8 @@ class HybridRetriever(BaseRetriever):
                     id SERIAL PRIMARY KEY,
                     query TEXT,
                     result_count INT,
-                    timestamp TIMESTAMP
+                    timestamp TIMESTAMP,
+                    results TEXT
                 )
             """)
             connection.commit()
@@ -193,16 +96,21 @@ class HybridRetriever(BaseRetriever):
             if connection:
                 self._connection_pool.putconn(connection)
 
-    def _log_query(self, query: str, result_count: int) -> None:
-        """Log the query and result count to the database."""
+    def _log_query(self, query: str, result_count: int, results: str) -> None:
+        """Log the query, number of hits, and full JSON results to the database."""
         connection = None
         try:
             connection = self._connection_pool.getconn()
             cursor = connection.cursor()
             cursor.execute("""
-                INSERT INTO retriever_logs (query, result_count, timestamp)
-                VALUES (%s, %s, %s)
-            """, (query, result_count, datetime.now()))
+                INSERT INTO retriever_logs (query, result_count, timestamp, results)
+                VALUES (%s, %s, %s, %s)
+            """, (
+                query,
+                result_count,
+                datetime.now(),
+                results
+            ))
             connection.commit()
             cursor.close()
         except Exception as e:
@@ -245,7 +153,7 @@ class HybridRetriever(BaseRetriever):
         else:
             return str(id(node))
 
-    def _serialize_node(node_with_score):
+    def _serialize_node(self, node_with_score: NodeWithScore) -> dict:
         """
         Convert a NodeWithScore object to a dictionary representation.
         Modify this function if you want to log additional/specific attributes.
@@ -278,20 +186,24 @@ class HybridRetriever(BaseRetriever):
                 if dense_query_result.similarities is not None:
                     score = dense_query_result.similarities[index]
                 dense_nodes.append(NodeWithScore(node=node, score=score))
+            # print(f"dense nodes: {dense_nodes}")
             
             # BM25 retrieval
             bm25_nodes = []
             if self._bm25_retriever:
                 # Assuming the BM25 retriever implements a method 'retrieve'
-                bm25_nodes = self._bm25_retriever.retrieve(query_bundle.query_str, top_k=self._bm25_top_k)
-            
+                bm25_nodes = self._bm25_retriever.retrieve(query_bundle.query_str)
+            # print(f"bm25 nodes: {bm25_nodes}")
+
             # Normalize scores from each retrieval method separately.
             dense_norm_scores = self._normalize_scores(dense_nodes) if dense_nodes else []
             bm25_norm_scores = self._normalize_scores(bm25_nodes) if bm25_nodes else []
+            # print(f"dense nodes norm: {dense_norm_scores}")
+            # print(f"bm25 nodes norm: {bm25_norm_scores}")
 
             # Calcula baseline values
-            dense_baseline = min(dense_norm_scores) if dense_norm_scores else 0
-            bm25_baseline = min(bm25_norm_scores) if bm25_norm_scores else 0
+            dense_baseline = min(dense_norm_scores) if dense_norm_scores else 0.0
+            bm25_baseline = min(bm25_norm_scores) if bm25_norm_scores else 0.0
 
             # Merge results and deduplicate nodes based on a unique key
             combined_results = {}
@@ -314,6 +226,7 @@ class HybridRetriever(BaseRetriever):
                         'dense_score': dense_baseline,
                         'bm25_score': bm25_norm_scores[i] if i < len(bm25_norm_scores) else bm25_baseline
                     }
+            # print(f"combined nodes: {combined_results}")
 
             # Compute a weighted hybrid score for each node
             hybrid_results = []
@@ -321,6 +234,7 @@ class HybridRetriever(BaseRetriever):
                 hybrid_score = (self._dense_weight * entry['dense_score'] +
                                 self._bm25_weight * entry['bm25_score'])
                 hybrid_results.append(NodeWithScore(node=entry['node'], score=hybrid_score))
+            # print(f"hydrid nodes: {hybrid_results}")
 
             # Sort the combined results in descending order by hybrid score
             hybrid_results.sort(key=lambda x: x.score if x.score is not None else 0, reverse=True)

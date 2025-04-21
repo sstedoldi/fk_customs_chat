@@ -17,11 +17,11 @@ from llama_index.core import SimpleDirectoryReader
 from llama_index.readers.file import PyMuPDFReader
 from llama_index.readers.web import SimpleWebPageReader # to improve extracting more metadata
 from llama_index.core.schema import TextNode
-# from llama_index.core.node_parser import SentenceSplitter
-from modules.sentence import SentenceSplitter
+from llama_index.core.node_parser import SentenceSplitter
 # from llama_index.retrievers.bm25 import BM25Retriever
+# from modules.sentence import SentenceSplitter
 from modules.bm25 import BM25Retriever
-from uuid import uuid4
+# from uuid import uuid4
 # from nltk.tokenize import word_tokenize
 # import string
 
@@ -140,17 +140,8 @@ class HydridIndexingPipeline:
         :param extra_metadata: Optional dictionary with additional metadata 
                                (e.g., {"source_path": "path/to/file", "source_type": "pdf"}).
         """
-        print("!document_processing")
         try:
-            # # Ensure unique document_ids
-            # for doc in documents:
-            #     doc.id_ = str(uuid4())
-
             print(f"Document IDs to process: {str([doc.id_ for doc in documents])}")
-
-            # text_parser = SentenceSplitter(chunk_size=self._chunk_size,
-            #                                chunk_overlap=self._chunk_overlap)
-            # print(f"Text parser: {text_parser}")
 
             # Creating Nodes with Merged IDs & Metadata
             nodes = []
@@ -158,15 +149,12 @@ class HydridIndexingPipeline:
             # Process each document to create nodes with proper IDs
             for doc in documents:
                 chunks = self._text_parser.split_text(doc.text)
-                print(f"Chunks to process: {chunks}")
+                # print(f"Chunks to process: {chunks}")
 
                 for i, chunk in enumerate(chunks):
-                    print(f"Chunk {i}: {chunk} ")
+                    # print(f"Chunk {i}: {chunk} ")
                     node = TextNode(text=chunk)
-                    print(f"Node {i}: {node} ")
-                    # Assign document and chunk IDs
-                    node.document_id = doc.id_
-                    node.chunk_id = f"{doc.id_}-{i+1}"
+                    # print(f"Node {i}: {node} ")
                     
                     # Merge source document metadata with any extra metadata
                     metadata = doc.metadata.copy() if doc.metadata else {}
@@ -174,8 +162,8 @@ class HydridIndexingPipeline:
                         metadata.update(extra_metadata)
                     metadata.setdefault('indexed_date', datetime.now().isoformat())
                     # Optionally embed the IDs in the metadata as well
-                    metadata['document_id'] = node.document_id
-                    metadata['chunk_id'] = node.chunk_id
+                    metadata['document_id'] = doc.id_
+                    metadata['chunk_id'] = f"{doc.id_}-{i+1}"
                     node.metadata = metadata
 
                     nodes.append(node)
@@ -187,9 +175,9 @@ class HydridIndexingPipeline:
                         node.get_content(metadata_mode="all")
                         )
                     node.embedding = node_embedding
-                    print(f"Node {j} with embedding: {node} ")
+                    # print(f"Node {j} with embedding: {node} ")
                 except Exception as e:
-                    print(f"Error embedding text node {node.chunk_id}: {e}")
+                    print(f"Error embedding text node {node.metadata.chunk_id}: {e}")
 
             # Add all nodes to the vector store
             self._vector_store.add(nodes)
@@ -206,7 +194,7 @@ class HydridIndexingPipeline:
                     self._bm25_retriever.update_index(
                         nodes, 
                         language=self._language,
-                        verbose=self._bm25_retriever.verbose
+                        verbose=self._bm25_verbose
                         )
                     os.makedirs(self._bm25_path, exist_ok=True)
                     self._bm25_retriever.persist(self._bm25_path)
@@ -219,6 +207,7 @@ class HydridIndexingPipeline:
                     self._bm25_retriever = BM25Retriever(
                         nodes=nodes,
                         language=self._language,
+                        similarity_top_k=10, # fixed for now
                         verbose=self._bm25_verbose
                     )
                     os.makedirs(self._bm25_path, exist_ok=True)
