@@ -186,14 +186,14 @@ class HybridRetriever(BaseRetriever):
                 if dense_query_result.similarities is not None:
                     score = dense_query_result.similarities[index]
                 dense_nodes.append(NodeWithScore(node=node, score=score))
-            # print(f"dense nodes: {dense_nodes}")
+            print(f"dense nodes: {dense_nodes}")
             
             # BM25 retrieval
             bm25_nodes = []
             if self._bm25_retriever:
                 # Assuming the BM25 retriever implements a method 'retrieve'
                 bm25_nodes = self._bm25_retriever.retrieve(query_bundle.query_str)
-            # print(f"bm25 nodes: {bm25_nodes}")
+            print(f"bm25 nodes: {bm25_nodes}")
 
             # Normalize scores from each retrieval method separately.
             dense_norm_scores = self._normalize_scores(dense_nodes) if dense_nodes else []
@@ -226,7 +226,7 @@ class HybridRetriever(BaseRetriever):
                         'dense_score': dense_baseline,
                         'bm25_score': bm25_norm_scores[i] if i < len(bm25_norm_scores) else bm25_baseline
                     }
-            # print(f"combined nodes: {combined_results}")
+            print(f"combined nodes: {combined_results}")
 
             # Compute a weighted hybrid score for each node
             hybrid_results = []
@@ -234,13 +234,13 @@ class HybridRetriever(BaseRetriever):
                 hybrid_score = (self._dense_weight * entry['dense_score'] +
                                 self._bm25_weight * entry['bm25_score'])
                 hybrid_results.append(NodeWithScore(node=entry['node'], score=hybrid_score))
-            # print(f"hydrid nodes: {hybrid_results}")
 
             # Sort the combined results in descending order by hybrid score
             hybrid_results.sort(key=lambda x: x.score if x.score is not None else 0, reverse=True)
 
             # Getting top hydrid result
             hybrid_results = hybrid_results[:self._similarity_top_k]
+            print(f"hydrid nodes: {hybrid_results}")
 
             # Log the query and results
             results_str = json.dumps([self._serialize_node(node) for node in hybrid_results])

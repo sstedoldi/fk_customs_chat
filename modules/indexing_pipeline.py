@@ -207,7 +207,7 @@ class HydridIndexingPipeline:
                     self._bm25_retriever = BM25Retriever(
                         nodes=nodes,
                         language=self._language,
-                        similarity_top_k=10, # fixed for now
+                        similarity_top_k=5, # fixed for now
                         verbose=self._bm25_verbose
                     )
                     os.makedirs(self._bm25_path, exist_ok=True)

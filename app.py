@@ -80,7 +80,7 @@ def initialize_app(app):
             embed_model=embed_model,
             bm25_retriever=indexing_pipeline._bm25_retriever,
             similarity_top_k=5,
-            dense_top_k=10,
+            dense_top_k=5,
             # bm25_top_k=10, # fixed at the indexing pipeline
             bm25_weight=0.5,
             dense_weight=0.5,
