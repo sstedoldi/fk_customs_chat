@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 220
-
-ARTICULO 220. – . – La no agregación de la documentación complementaria a que se refiere el artículo 219, con excepción de aquella que tuviere los efectos indicados en su apartado 2, dentro del plazo que al efecto estableciere la Administración Nacional de Aduanas, hará automáticamente aplicable una multa equivalente al UNO (1%) por ciento del valor en aduana de la mercadería de que se tratare. El pago de la multa no dispensará de la obligación de acompañar la documentación faltante dentro de un plazo prudencial que al efecto le fijará al servicio aduanero, bajo apercibimiento de aplicarle las sanciones previstas en el artículo 100. Si la sanción aplicada fuere la suspención, ésta cesará cuando el interesado agregue la documentación.
-

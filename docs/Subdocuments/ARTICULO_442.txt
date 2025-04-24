@@ -1,6 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 442
-
-ARTICULO 442. – . – Transcurrido el plazo previsto en el artículo 437 sin que el interesado se hubiere presentado a retirar la mercadería, el servicio aduanero dispondrá su venta, previa verificación, clasificación y valoración de oficio de la misma, no admitiéndose, luego, diferente destinación que la definitiva que se fijare en el acto que ordenare la venta, caducando los derechos que el interesado hubiere dejado de ejercer respecto de los actos ya practicados.

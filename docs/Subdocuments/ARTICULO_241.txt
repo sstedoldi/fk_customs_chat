@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 241
-
-ARTICULO 241. – . – Con sujeción a las normas establecidas en la legislación, en la forma, en los plazos y con los recaudos que estableciere la Administración Nacional de Aduanas con alcance general, el servicio aduanero procederá a verificar, clasificar y valorar la mercancía de que se tratare, a fin de determinar el régimen legal aplicable a la misma.
-

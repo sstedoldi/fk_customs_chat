@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Segundo
-ARTICULO: 144
-
-ARTICULO 144. – . – Cuando el servicio aduanero considerare que la mercadería detallada en el manifiesto de la pacotilla excede las necesidades razonables de cada tripulante o no responde al concepto de pacotilla, dispondrá la deducción del excedente o de lo incorrectamente incluido en él para su incorporación en el manifiesto de la carga, indicándose el nombre del tripulante al cual perteneciere.
-

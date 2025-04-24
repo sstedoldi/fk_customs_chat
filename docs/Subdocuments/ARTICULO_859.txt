@@ -1,7 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: ARTICULO 860 – Las disposiciones de esta Sección rigen respecto de los hechos que en este código se prevén como delitos e infracciones aduaneros
-ARTICULO: 859
-
-ARTICULO 859. – . – La entrada en vigencia de las medidas que se adoptaren en ejercicio de las facultades conferidas en los artículos 857 y 858 se producirá al día siguiente al de la publicación de la norma respectiva en el Boletín Oficial, excepto que:
-1. la norma dispusiere que entrará en vigor en la fecha de su dictado;
-2. la norma determinare una fecha posterior.

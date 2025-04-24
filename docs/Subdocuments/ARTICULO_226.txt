@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 226
-
-ARTICULO 226. – . – Si en sede aduanera hubiere en trámite alguna controversia, sumarial o no sumarial, originada en la declaración de los elementos necesarios para la clasificación arancelaria, valoración o aplicación de los tributos y prohibiciones referidos a una mercadería de importación, que fueren identificados aquellos que hubieren de ser objeto de declaración, el interesado podrá comprometer ésta última en forma supeditada a la del antecedente. El pronunciamiento final que recayere en sede aduanera se hará extensivo a la declaración supeditada, sin perjuicio de la eventual interposición de los recursos que, individualmente, pudieren corresponder contra la decisión.
-

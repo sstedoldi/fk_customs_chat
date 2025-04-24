@@ -1,7 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 921
-
-ARTICULO 921. – . – Cuando por faltar no pudiere verificarse la mercadería objeto de la infracción, ésta se clasificará por la posición arancelaria aplicable a la categoría más fuertemente gravada que correspondiere a su naturaleza, en el arancel general.
-En caso de igualdad de tributos de varias categorías posibles, se tomará aquélla cuyo número de orden en el arancel fuere mayor.

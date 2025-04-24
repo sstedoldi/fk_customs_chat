@@ -1,7 +1,0 @@
-SECCION: SECCION I SUJETOS
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 39
-
-ARTICULO 39. – . – Los despachantes de aduana que gestionaren ante las aduanas el despacho y la destinación de mercadería, de la que tuvieren su disponibilidad jurídica, sin acreditar su condición de representantes, en alguna de las formas previstas en el apartado 1 del artículo 38, serán considerados importadores o exportadores, quedando sujetos a los requisitos y obligaciones determinadas para ellos.
-

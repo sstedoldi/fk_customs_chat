@@ -1,9 +1,0 @@
-SECCION: SECCION IX
-Capítulo: Capítulo Primero
-ARTICULO: 671
-
-ARTICULO 671. – . – El incumplimiento de las obligaciones impuestas como condición dará lugar a:
-1. la aplicación de las sanciones previstas en la norma que hubiere establecido la exención, en este código y en la reglamentación;
-2. el cobro de los tributos que hubieren sido dispensados, salvo si se tratare del incumplimiento de una obligación meramente formal.
-El importe de tales tributos será actualizado de conformidad con la variación que hubiere experimentado el índice de precios al por mayor, nivel general, elaborado por el Instituto Nacional de Estadística y Censos o por el organismo oficial que cumpliere sus funciones desde el mes en que se hubiere librado la mercadería hasta el penúltimo mes anterior a aquél en que se dictare la resolución que dispusiere su cobro, sin perjuicio de que tal importe continúe actualizándose hasta el penúltimo mes anterior al de la fecha en que s efectuare el pago;
-3. las demás consecuencias contempladas en la norma que hubiere establecido la exención, en este código y en la reglamentación.

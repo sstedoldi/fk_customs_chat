@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Quinto
-ARTICULO: 170
-
-ARTICULO 170. – . – Si el medio transportador se hallare en peligro que impidiere la presentación de la documentación mencionada en el artículo 169, ese hecho deberá ser puesto en inmediato conocimiento del servicio aduanero o, en su caso, de la autoridad correspondiente, debiendo efectuarse la presentación en cuanto desapareciere el impedimento.
-

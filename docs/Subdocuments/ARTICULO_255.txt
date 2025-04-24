@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 255
-
-ARTICULO 255. – . – En caso de autorizarse la importación temporaria, deberá otorgarse una garantía a favor del servicio aduanero, de conformidad con lo previsto en la Sección V, Título III, tendiente a asegurar el fiel cumplimiento de las obligaciones que el régimen impone.
-

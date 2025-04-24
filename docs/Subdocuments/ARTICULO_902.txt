@@ -1,7 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 902
-
-ARTICULO 902. – . – 1. No se aplicará sanción a quien hubiere cumplido con todos los deberes inherentes al régimen, operación, destinación o a cualquier otro acto o situación en que interviniere o se encontrare, salvo los supuestos de responsabilidad por hecho de otro previsto en este código.
-2. La ignorancia o el error de hecho o de derecho no constituyen eximentes de sanción, salvo las excepciones expresamente previstas en este código.

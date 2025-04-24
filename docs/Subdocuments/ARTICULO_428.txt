@@ -1,9 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 428
-
-ARTICULO 428. – . – El adquirente o el que hubiere ejercido el derecho previsto en el artículo 427, según el caso, debe retirar la mercadería dentro del plazo que fijare la reglamentación, previo cumplimiento de los requisitos correspondientes a su libramiento.
-Vencido dicho plazo, el servicio aduanero dispondrá nuevamente su venta, con pérdida del importe que se hubiere pagado.
-Capitulo Segundo
-Mercadería que hubiere sido objeto de comiso o abandono

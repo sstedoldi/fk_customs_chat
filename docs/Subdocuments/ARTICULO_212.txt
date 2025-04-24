@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Noveno
-ARTICULO: 212
-
-ARTICULO 212. – . – La mercadería deteriorada o destruida durante su permanencia en depósito deberá ser considerada, a los fines de su despacho, como si hubiere sido importada en el estado en que ella se encontrare.
-

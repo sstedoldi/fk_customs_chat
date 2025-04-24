@@ -1,9 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: TITULO II
-Capítulo: Capítulo Quinto
-ARTICULO: 943
-
-ARTICULO 943. – . – La prescripción de la acción para hacer efectivas las penas se interrumpe por:
-1. la comisión de una nueva infracción o de un delito aduaneros;
-2. los actos de ejecución en sede administrativa tendientes a hacerlas efectivas;
-3. la iniciación de la acción judicial promovida para hacerlas efectivas.

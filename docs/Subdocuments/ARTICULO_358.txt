@@ -1,8 +1,0 @@
-SECCION: SECCION IV EXPORTACION
-TITULO: DESTINACIONES DE EXPORTACION
-Capítulo: Capítulo Tercero
-ARTICULO: 358
-
-ARTICULO 358. – . – 1. La mercadería que hubiere sufrido merma durante su permanencia bajo el régimen de exportación temporaria, dentro de las tolerancias legales o en su defecto las que admitiere el servicio aduanero, será considerada, a los fines de su exportación o reimportación para consumo, según el caso, en el estado en que ella se encontrare.
-2. Las tolerancias admisibles, en el caso de que no estuvieren fijadas legalmente ni tuvieren previsto un régimen especial para su determinación, serán establecidas por el servicio aduanero con anterioridad al libramiento de la mercadería, a pedido del interesado, previa consulta a los organismos técnicos competentes.
-

@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 239
-
-ARTICULO 239. – . - En el supuesto de desistirse de la solicitud de destinación de importación para consumo, no se permitirá una nueva destinación de importación para consumo de la misma mercadería al mismo territorio aduanero, ya fuere en forma inmediata o luego de obtenerse previamente una destinación suspensiva.
-

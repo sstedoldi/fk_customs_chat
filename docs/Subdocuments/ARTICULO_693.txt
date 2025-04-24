@@ -1,7 +1,0 @@
-SECCION: SECCION IX
-Capítulo: Capítulo Tercero
-ARTICULO: 693
-
-ARTICULO 693. – . – El precio de la primera venta en el país de una mercadería importada que se efectuare a un comprador independiente, en el mismo estado en que se hubiere importado, podrá considerarse como precio de exportación previa deducción de todos los conceptos necesarios para ajustar dicho valor al verdadero precio de exportación, en los siguientes supuestos:
-1. cuando no hubiere precio de exportación;
-2. cuando el precio de primera venta en el país, con las deducciones indicadas en este artículo, fuere inferior al de la exportación.

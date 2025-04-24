@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Sexto
-ARTICULO: 180
-
-ARTICULO 180. – . – En el supuesto de mercadería que hubiere arribado, cierta o presuntamente, al territorio aduanero como consecuencia de naufragio, echazón, accidente u otro siniestro acaecido durante su transporte, el servicio aduanero dispondrá su ingreso a depósito provisorio de importación por cuenta de quien correspondiere, previo informe que contendrá una descripción detallada de la mercadería y de las circunstancias en que hubiere sido hallada.
-

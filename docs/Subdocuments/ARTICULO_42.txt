@@ -1,7 +1,0 @@
-SECCION: SECCION I SUJETOS
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 42
-
-ARTICULO 42. – . – La Administración Nacional de Aduanas podrá disponer la suspensión por tiempo determinado de nuevas inscripciones, cuando mediaren razones que así lo justificaren.
-

@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 261
-
-ARTICULO 261. – . – La mercadería totalmente destruida o irremediablemente perdida por caso fortuito o fuerza mayor durante su permanencia bajo el régimen de importación temporaria no está sujeta a los tributos que gravaren su importación para consumo, excepto las tasas devengadas por servicios, siempre que la causal invocada se acreditare debidamente a satisfacción del servicio aduanero. La mercadería no se considerará irremediablemente perdida cuando, pese a no poder ser recuperada por su propietario, pudiere ser empleada por un tercero.
-

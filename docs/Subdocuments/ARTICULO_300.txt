@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Sexto
-ARTICULO: 300
-
-ARTICULO 300. – . – El servicio aduanero, a pedido del interesado, formulado en la solicitud de la destinación y teniendo en consideración razones operativas, podrá autorizar que el transporte de la mercadería sometida al régimen de tránsito de importación se efectúe mediando transbordo, en cuyo caso deberán adoptarse las pertinentes medidas de control.
-

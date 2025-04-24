@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Sexto
-ARTICULO: 310
-
-ARTICULO 310. – . – Cuando resultare faltar mercadería sometida al régimen de tránsito de importación, se hallare o no su importación sometida a una prohibición, se presumirá, sin admitirse prueba en contrario y al solo efecto tributario, que ha sido importada para consumo.
-

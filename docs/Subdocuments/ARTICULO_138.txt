@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Segundo
-ARTICULO: 138
-
-ARTICULO 138. – . – La documentación indicada en el artículo 135, apartado 1, debe presentarse, juntamente con su traducción al idioma nacional, inmediatamente después del arribo del buque, salvo la traducción del manifiesto original de la carga, que podrá presentarse hasta DOS (2) días después, contados desde su arribo.
-

@@ -1,7 +1,0 @@
-SECCION: SECCION XIV PROCEDIMIENTOS
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 1066
-
-ARTICULO 1066. – . – 1. Cuando la resolución confirmare la liquidación de tributos, la intimación o la aplicación de multa automática a que se refieren respectivamente los incisos a), b) y e) del artículo 1053, los importes correspondientes serán actualizados de acuerdo a lo previsto en el artículo 799 o en el 926, según el caso, hasta el penúltimo mes anterior al de la fecha de la resolución confirmatoria, sin perjuicio de que esos importes continúen actualizándose hasta el penúltimo mes anterior al de la fecha de su efectivo pago o hasta que fueren garantizados con dinero en efectivo entregado en calidad de depósito en sede aduanera.
-2. En estos supuestos la resolución podrá disponer que el servicio aduanero solicite al juez correspondiente el embargo preventivo, inhibición general de bienes o cualquier otra medida cautelar sobre los bienes del deudor que, según las circunstancias, fueren aptas para asegurar provisionalmente el cumplimiento del pronunciamiento. La medida cautelar se trabará bajo la responsabilidad del Fisco por el importe de la condena con más el de los tributos correspondientes, si los hubiere.

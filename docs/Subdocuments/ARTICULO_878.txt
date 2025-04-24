@@ -1,8 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: TITULO I
-Capítulo: Capítulo Quinto Disposiciones comunes Penas
-ARTICULO: 878
-
-ARTICULO 878. – . – Para la aplicación de las penas establecidas en este Título, se entenderá por valor en plaza:
-1. el valor en aduana, determinado conforme a lo dispuesto en el artículo 642, con más los gastos de despacho y los tributos que gravaren la importación para consumo de la mercadería de que se tratare, si el delito se hubiere cometido en relación con una importación;
-2. el valor imponible previsto en el artículo 735, con más los tributos interiores que no fueren aplicables con motivo de la exportación, si el delito se hubiere cometido en relación con una exportación.

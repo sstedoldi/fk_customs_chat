@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 248
-
-ARTICULO 248. – . – Efectuados los trámites relativos al despacho de la mercadería y, en su caso, pagados o garantizados los tributos correspondientes, se procederá a su libramiento. De no cumplirse con el pago o con la garantía que correspondiere, se aplicará el procedimiento de ejecución previsto en la Sección XIV, Título II, Capítulo Quinto.
-

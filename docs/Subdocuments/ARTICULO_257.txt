@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 257
-
-ARTICULO 257. – . – Cuando la mercadería retornare en el mismo estado en que hubiere sido importada, la reexportación para consumo efectuada en cumplimiento de la obligación asumida en el régimen de importación temporaria no está sujeta a la imposición de tributos, con excepción de las tasas retributivas de servicios.
-

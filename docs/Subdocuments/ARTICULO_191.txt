@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Octavo
-ARTICULO: 191
-
-ARTICULO 191. – . – A los efectos de este código, se entiende por descarga la operación por la cual la mercadería arribada es retirada del medio de transporte en el que hubiere sido conducida.
-

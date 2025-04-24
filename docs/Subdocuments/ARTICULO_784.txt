@@ -1,9 +1,0 @@
-SECCION: SECCION IX
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 784
-
-ARTICULO 784. – . – En los supuestos previstos en el artículo 783, el propietario o poseedor no es responsable cuando la mercadería:
-1. hubiera sido adquirida en subasta ordenada por autoridad administrativa o judicial o, en su caso, por cualquiera de las formas de venta previstas en los artículos 422 y 430;
-2. hubiera sido adquirida en una casa de venta del ramo, en cuyo caso dicha responsabilidad recaerá sobre el titular de esta casa de comercio;
-3. presentare debidamente aplicados los instrumentos fiscales de impuestos internos o los medios identificatorios establecidos con el fin de acreditar su lícita tenencia.

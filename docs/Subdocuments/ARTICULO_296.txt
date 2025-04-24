@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Sexto
-ARTICULO: 296
-
-ARTICULO 296. – . – La destinación de tránsito de importación es aquella en virtud de la cual la mercadería importada, que careciera de libre circulación en el territorio aduanero, puede ser transportada dentro del mismo desde la aduana por la que hubiere arribado hasta otra aduana, para ser sometida a otra destinación aduanera.
-

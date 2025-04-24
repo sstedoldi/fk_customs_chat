@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Sexto
-ARTICULO: 306
-
-ARTICULO 306. – . – Cuando algún hecho impidiere la prosecución del transporte de la mercadería sometida al régimen de tránsito de importación, la persona a cuyo cargo se encontrare en ese momento el medio de transporte debe dar aviso de inmediato al servicio aduanero o, en caso de mediar distancias que impidan la rápida concurrencia del mismo, a la autoridad policial más cercana, bajo vigilancia de la cual quedarán el medio de transporte y la mercadería que trajere a bordo, hasta que tomare intervención el servicio aduanero.
-

@@ -1,7 +1,0 @@
-SECCION: SECCION XIV PROCEDIMIENTOS
-TITULO: TITULO II
-Capítulo: Capítulo Cuarto
-ARTICULO: 1118
-
-ARTICULO 1118. – . – 1. La sustanciación de las actuaciones de prevención en las causas por los delitos previstos, en la Sección XII, Título I, de este código, ya fueren iniciadas de oficio o por denuncia, corresponderá, según la autoridad que hubiere prevenido, al servicio aduanero o, dentro de sus respectivas jurisdicciones, a la Gendarmería Nacional, Prefectura Naval Argentina, Policía Nacional Aeronáutica o Policía Federal Argentina, las que quedan investidas al efecto con las funciones que se confieren a la autoridad de prevención en el Código de Procedimiento en lo Criminal para la Justicia Federal y los Tribunales de la Capital y Territorios Nacionales.
-2. No obstante lo previsto en el apartado 1 de este artículo, el sumario debe ser sustanciado exclusivamente por el servicio aduanero cuando se tratare de alguno de los delitos previstos en el artículo 864, inciso b), c) o e), su tentativa o en los artículos 868, 869 y 873.

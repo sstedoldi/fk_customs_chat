@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Primero
-ARTICULO: 133
-
-ARTICULO 133. – . – Cuando el arribo de la mercadería se realizare por un medio de transporte que no se encontrare específicamente previsto en este Título, se aplicarán análogamente las disposiciones que más se adecuaren a las características del medio de que se tratare.
-

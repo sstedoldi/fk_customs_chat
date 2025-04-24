@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Primero
-ARTICULO: 131
-
-ARTICULO 131. – . – La Administración Nacional de Aduanas determinará las formalidades a que habrá de ajustarse la confección, presentación y trámite de la documentación que debe presentarse al tiempo de arribar al medio de transporte, incluidas las formalidades relativas al modo de descripción de la mercadería.
-

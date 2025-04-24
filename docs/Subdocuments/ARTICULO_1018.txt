@@ -1,7 +1,0 @@
-SECCION: SECCION XIV PROCEDIMIENTOS
-TITULO: DISPOSICIONES GENERALES
-Capítulo: Capítulo Segundo
-ARTICULO: 1018
-
-ARTICULO 1018. – . – 1. En los procedimientos por infracciones, de impugnación y de ejecución en sede administrativa, corresponderá conocer y decidir en forma originaria al administrador de la aduana en cuya jurisdicción se hubieren producido los hechos.
-2. Cuando se tratare de liquidaciones suplementarias de tributos, también corresponderá conocer y decidir en forma originaria al jefe de la dependencia de la Administración Nacional de Aduanas encargada de la revisión de los documentos aduaneros cancelados.

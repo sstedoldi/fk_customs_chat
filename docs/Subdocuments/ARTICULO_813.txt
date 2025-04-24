@@ -1,6 +1,0 @@
-SECCION: SECCION IX
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 813
-
-ARTICULO 813. – . – Cuando se hiciere lugar a la repetición de los importes por tributos que se hubieren pagado espontáneamente ante el servicio aduanero, aquellos serán actualizados de acuerdo a la variación del índice de precios al por mayor (nivel general) elaborado por el Instituto Nacional de Estadística y Censos o por el organismo oficial que cumpliere sus funciones, desde el mes en que se hubiere efectuado el reclamo de los mismos hasta el penúltimo mes anterior a aquél en que se hiciere efectiva la devolución.

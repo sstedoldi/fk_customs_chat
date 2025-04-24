@@ -1,6 +1,0 @@
-SECCION: SECCION IX
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 799
-
-ARTICULO 799. – . – Vencido el plazo de DIEZ (10) días, contado desde la notificación del acto por el cual se hubieren liquidado los tributos, o vencido el plazo cierto de espera que se hubiere concedido para su pago, el importe correspondiente será actualizado de acuerdo con la variación del índice de precios al por mayor (nivel general) elaborado por el Instituto Nacional de Estadística y Censos o por el organismo oficial que cumpliere sus funciones, desde el mes en que se produjere dicho vencimiento hasta el penúltimo mes anterior al de la fecha del pago o al de aquélla en que se garantizare el importe controvertido con dinero en efectivo, entregado en calidad de depósito en sede aduanera.

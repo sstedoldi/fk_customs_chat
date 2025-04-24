@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 224
-
-ARTICULO 224. – . – La declaración contenida en la solicitud de destinación de importación es inalterable una vez registrada y el servicio aduanero no admitirá del interesado rectificación, modificación o ampliación alguna, salvo las excepciones previstas en este código.
-

@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Noveno
-ARTICULO: 201
-
-ARTICULO 201. – . – El transportista, su agente o el interesado, según el caso, podrá presenciar la recepción de la mercadería en el depósito provisorio de importación a los fines de tomar conocimiento de las constancias que registren el depositario y efectuar por escrito las observaciones que estimare pertinentes.
-

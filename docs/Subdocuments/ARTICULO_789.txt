@@ -1,6 +1,0 @@
-SECCION: SECCION IX
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 789
-
-ARTICULO 789. – . – El pago de la obligación tributaria aduanera debe efectuarse al contado y antes del libramiento de la mercadería, salvo los casos en que el libramiento fuere autorizado bajo el régimen de garantía.

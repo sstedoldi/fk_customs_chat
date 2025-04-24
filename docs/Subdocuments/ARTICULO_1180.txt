@@ -1,8 +1,0 @@
-SECCION: SECCION XIV PROCEDIMIENTOS
-TITULO: TITULO III RECURSOS
-Capítulo: Capítulo Quinto
-ARTICULO: 1180
-
-ARTICULO 1180. – . – En los recursos de apelación contra las sentencias del Tribunal Fiscal, la Cámara Federal:
-1. podrá, si hubiere violación manifiesta de las formas legales en el procedimiento ante el Tribunal Fiscal, declarar la nulidad de las actuaciones o resoluciones y devolverlas a dicho Tribunal con apercibimiento, salvo que, en atención a la naturaleza de la causa, juzgare más conveniente su apertura a prueba en esa instancia;
-2. resolverá el fondo del asunto, teniendo por válidas las conclusiones del Tribunal Fiscal sobre los hechos probados. No obstante, podrá apartarse de ellas y disponer la producción de pruebas cuando, a su criterio, las constancias de los autos autorizaren a suponer que la sentencia ha incurrido en error en la apreciación de los hechos.

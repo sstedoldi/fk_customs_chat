@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Segundo
-ARTICULO: 137
-
-ARTICULO 137. – . - Cuando se tratare de buques con una capacidad de cincuenta pasajeros como mínimo, el manifiesto de rancho podrá contener una declaración parcial, siempre que la mercadería no detallada en él fuese almacenada a bordo en depósitos, que serán clausurados y sellados o precintados con intervención del servicio aduanero; estado en que permanecerán hasta la partida del buque. En este supuesto, se deberá efectuar una declaración con el detalle de los accesos a los depósitos antes referidos, a fin de que queden individualizados con relación a los demás compartimientos.
-

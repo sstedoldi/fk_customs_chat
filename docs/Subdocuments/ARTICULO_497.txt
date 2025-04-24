@@ -1,6 +1,0 @@
-SECCION: SECCION VI
-Capítulo: Capítulo Cuarto
-ARTICULO: 497
-
-ARTICULO 497. – . – 1. El servicio aduanero, en el ejercicio del control que este código le otorga sobre las personas y la mercadería, puede verificar el equipaje de los viajeros y proceder al registro personal de los mismos. El control sobre las personas se ejercitará, salvo supuestos excepcionales, sobre una base selectiva o por sondeo.
-2. No obstante lo previsto en el apartado 1, se procederá al registro personal de los viajeros cuando se presumiere la configuración de algún ilícito.

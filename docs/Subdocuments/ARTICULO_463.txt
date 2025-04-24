@@ -1,6 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO III
-Capítulo: Capítulo Cuarto
-ARTICULO: 463
-
-ARTICULO 463. – . – La resolución que denegare el otorgamiento del régimen de garantía, fijare el importe de la garantía o determinare su forma, podrá ser impugnada de conformidad con el procedimiento previsto en la Sección XIV, Título II, Capítulo Primero.

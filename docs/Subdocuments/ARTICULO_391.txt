@@ -1,7 +1,0 @@
-SECCION: SECCION IV EXPORTACION
-TITULO: DESTINACIONES DE EXPORTACION
-Capítulo: Capítulo Tercero
-ARTICULO: 391
-
-ARTICULO 391. – . – Transcurrido el plazo de UN (1) mes, contado a partir del vencimiento del que hubiere sido acordado para el cumplimiento del removido, sin que el medio de transporte que traslada la mercadería sometida al régimen de removido arribare a la aduana de destino, se hallare o no su exportación sometida a una prohibición, se presumirá, al solo efecto tributario, que la mercadería sometida a dicho régimen ha sido exportada para consumo, salvo que el incumplimiento se hubiese originado en caso fortuito o fuerza mayor, que dicha causal se acreditare debidamente a satisfacción del servicio aduanero y que hubiese sido advertida a éste inmediatamente de sucedido el hecho.
-

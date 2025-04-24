@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 230
-
-ARTICULO 230. – . – En las operaciones aduaneras cuya tramitación no pudiere concluirse por incomparecencia del interesado, se citará a éste por un plazo no inferior a CINCO (5) días, contado desde la fecha de su notificación. Transcurrido el mismo sin que el interesado concurriere, podrá proseguirse el trámite de oficio sin la presencia ni intervención de aquél, no admitiéndose posteriormente reclamo alguno por los derechos que hubiere dejado de ejercer.
-

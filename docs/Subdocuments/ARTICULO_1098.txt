@@ -1,9 +1,0 @@
-SECCION: SECCION XIV PROCEDIMIENTOS
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 1098
-
-ARTICULO 1098. – . – Corresponderá disponer el sobreseimiento definitivo en cualquiera de los siguientes supuestos:
-1. cuando los hechos objeto de la investigación no se hubieren cometido;
-2. cuando los hechos no configuraren un ilícito aduanero;
-3. cuando de la investigación surgiere la falta de responsabilidad de los imputados.

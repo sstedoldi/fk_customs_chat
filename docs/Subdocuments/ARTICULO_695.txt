@@ -1,9 +1,0 @@
-SECCION: SECCION IX
-Capítulo: Capítulo Tercero
-ARTICULO: 695
-
-ARTICULO 695. – . – Las comparaciones de precios que se realizaren de acuerdo con los artículos precedentes de este capítulo deberán practicarse:
-1. entre ventas que se hubieren efectuado en la misma fecha o, en su defecto, en las fechas más próximas posibles, utilizando el tipo de cambio vigente en nuestro país en el supuesto de que fuere necesario convertir moneda extranjera en moneda nacional, para posibilitar la comparación de precios de conformidad con un patrón uniforme;
-2. entre ventas que se hubieren efectuado en el mismo nivel comercial, el cual será, en principio, el correspondiente al de la salida de fábrica o lugar de producción;
-3. entre operaciones que se hubieren efectuado por cantidades similares, en la medida en que la cantidad influyere sobre el precio;
-4. tomando en consideración las diferencias en las condiciones de venta, tributación u otras que afectaren la equivalencia de los precios a comparar.

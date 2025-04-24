@@ -1,8 +1,0 @@
-SECCION: SECCION IX
-Capítulo: Capítulo Tercero
-ARTICULO: 705
-
-ARTICULO 705. – . – La investigación para determinar la existencia de dumping o de subsidio y acreditar los extremos necesarios para la imposición de los derechos antidumping y compensatorios previstos en este código se iniciará:
-1. por denuncia formulada por quienes resultaren o pudieren resultar afectados por el dumping o subsidio;
-2. por denuncia formulada por las dependencias centralizadas o descentralizadas de la administración pública nacional o provincial; o
-3. de oficio, por la autoridad de aplicación.

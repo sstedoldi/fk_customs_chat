@@ -1,6 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 429
-
-ARTICULO 429. – . – Cuando la mercadería pasare a ser de propiedad del Estado nacional, en virtud de comiso o abandono, el servicio aduanero dispondrá su venta, previa verificación, clasificación y valoración de la misma, no admitiéndose, luego, diferente destinación que la definitiva que se fijare en el acto que ordene la venta correspondiente.

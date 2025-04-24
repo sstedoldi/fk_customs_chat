@@ -1,9 +1,0 @@
-SECCION: SECCION IX
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 817
-
-ARTICULO 817. – . – La prescripción de la acción de los administrados para repetir los importes pagados indebidamente en concepto de tributos regidos por la legislación aduanera se suspende en los siguientes supuestos:
-1. durante la sustanciación del reclamo de repetición deducido ante el servicio aduanero;
-2. desde la interposición del recurso de apelación deducido ante el Tribunal Fiscal contra la resolución aduanera denegatoria que hubiera recaído en el reclamo de repetición o por retardo en el dictado de la misma, hasta que recayere decisión definitiva en la causa;
-3. desde la interposición4, en sede judicial, de la demanda de repetición, hasta que recayere decisión definitiva en la causa.

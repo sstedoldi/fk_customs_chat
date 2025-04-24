@@ -1,7 +1,0 @@
-SECCION: SECCION I SUJETOS
-TITULO: TITULO IV OTROS SUJETOS
-Capítulo: Capítulo Tercero
-ARTICULO: 108
-
-ARTICULO 108. – . – Los organismos de la administración pública nacional que tuvieren a su cargo la resolución de causas por ilícitos relativos al control fiscal o cambiario, lealtad comercial internacional, recaudación tributaria u otras vinculadas con el tráfico internacional de mercadería comunicarán a la Administración Nacional de Aduanas las resoluciones condenatorias firmes que hubieren recaído. En el supuesto de que las personas condenadas se encontraren inscriptas en el Registro de Importadores y Exportadores, en el de Despachantes de Aduana o en el de Agentes de Transporte Aduanero, dichos antecedentes se asentarán en el correspondiente legajo, sin perjuicio de lo que correspondiere en virtud de lo dispuesto en el artículo 23, inciso v), punto 6).
-

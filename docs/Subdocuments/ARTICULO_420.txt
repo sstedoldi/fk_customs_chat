@@ -1,6 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 420
-
-ARTICULO 420. – . – Una vez dispuesta la venta a que hace referencia el artículo 419, no se admitirá diferente destinación que la definitiva que se fijare en el acto que ordenare la venta, caducando los derechos que el interesado hubiere dejado de ejercer respecto de los actos ya practicados.

@@ -1,6 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Segundo
-ARTICULO: 245
-
-ARTICULO 245. – . – El agente del servicio aduanero que en el curso del despacho comprobare prima facie la comisión de algún ilícito aduanero procederá a formular la pertinente denuncia al administrador de la aduana o a quien ejerciere sus funciones y a suspender su trámite, con la extracción, en su caso, de las muestras representativas necesarias para evaluar la seriedad o verosimilitud de la misma.

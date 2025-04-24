@@ -1,7 +1,0 @@
-SECCION: SECCION V
-TITULO: TITULO II
-Capítulo: Capítulo Primero
-ARTICULO: 434
-
-ARTICULO 434. – . – 1. El precio que se obtuviere en la venta ingresará a rentas generales.
-2. Si se tratare de abandono previamente se deducirán, cuando correspondiere, los tributos y demás erogaciones que se hubieren devengado. Si el precio que se obtuviere en la venta no fuere suficiente para cubrirlos se formularán los cargos correspondientes por los importes impagos a quien hubiera tenido derecho a disponer de la mercadería con anterioridad al abandono o al deudor, garante o responsable de la deuda, según el caso, salvo el supuesto en que se desconociere la identidad del obligado.

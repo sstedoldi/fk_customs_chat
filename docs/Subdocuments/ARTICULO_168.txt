@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Quinto
-ARTICULO: 168
-
-ARTICULO 168. – . – Cuando por razones de fuerza mayor un medio de transporte arribare a un puerto, aeropuerto o lugar que no fuere el de escala o de destino o a un lugar no habilitado al efecto o debiere regresar al puerto, aeropuerto o lugar de escala o de salida, la persona a cuyo cargo se encontrare en ese momento el medio de transporte debe dar aviso de inmediato a la autoridad más cercana, bajo vigilancia de la cual quedarán el medio de transporte, la mercadería que trajere a bordo, su tripulación y su pasaje, hasta que tome intervención el servicio aduanero.
-

@@ -1,6 +1,0 @@
-SECCION: SECCION XII DISPOSICIONES PENALES
-TITULO: TITULO I
-Capítulo: Capítulo Quinto Disposiciones comunes Penas
-ARTICULO: 881
-
-ARTICULO 881. – . – Cuando por falta no pudiere verificarse la mercadería objeto del delito, ésta se clasificará por la posición arancelaria aplicable a la categoría más fuertemente gravada que correspondiere a su naturaleza en el arancel general. En caso de igualdad de tributos de varias categorías posibles, se tomará aquella cuyo número de orden en el arancel fuere mayor.

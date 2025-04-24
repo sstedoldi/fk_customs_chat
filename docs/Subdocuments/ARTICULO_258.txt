@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: TITULO II
-Capítulo: Capítulo Tercero
-ARTICULO: 258
-
-ARTICULO 258. – . – Cuando la mercadería hubiera sido objeto de una transformación, elaboración, combinación, mezcla, reparación o cualquier otro perfeccionamiento o beneficio, la exportación de la mercadería resultante, está exenta del pago de los tributos que gravaren la exportación para consumo. No obstante, el Poder Ejecutivo podrá dejar sin efecto, total o parcialmente, dicha exención en lo que se refiere a lo incorporado a la misma en el territorio aduanero.
-

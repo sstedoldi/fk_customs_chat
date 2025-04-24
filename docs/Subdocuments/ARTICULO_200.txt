@@ -1,7 +1,0 @@
-SECCION: SECCION III IMPORTACION
-TITULO: ARRIBO DE LA MERCADERIA
-Capítulo: Capítulo Noveno
-ARTICULO: 200
-
-ARTICULO 200. – . – El depositario de la mercadería ingresada en depósito provisorio de importación asentará su recepción cotejando las constancias obrantes en el o los manifiestos de la carga con las referencias que ostentaren los bultos o envases, o la mercadería misma cuando ésta no se encontrare embalada, en cuanto a números, marcas y otras características relativas a su individualización, expresando asimismo su estado y condiciones extrínsecas.
-
