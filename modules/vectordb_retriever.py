@@ -141,18 +141,6 @@ class HybridRetriever(BaseRetriever):
                 normalized.append(1.0)
         return normalized
 
-    def _get_node_key(self, node: Any) -> str:
-        """
-        Generate a unique key for a node. This function attempts to use node-specific
-        attributes (such as 'chunk_id' or 'document_id') to deduplicate results.
-        """
-        if hasattr(node, 'chunk_id'):
-            return getattr(node, 'chunk_id')
-        elif hasattr(node, 'document_id'):
-            return getattr(node, 'document_id')
-        else:
-            return str(id(node))
-
     def _serialize_node(self, node_with_score: NodeWithScore) -> dict:
         """
         Convert a NodeWithScore object to a dictionary representation.
@@ -186,14 +174,13 @@ class HybridRetriever(BaseRetriever):
                 if dense_query_result.similarities is not None:
                     score = dense_query_result.similarities[index]
                 dense_nodes.append(NodeWithScore(node=node, score=score))
-            print(f"dense nodes: {dense_nodes}")
+            # print(f"dense nodes: {dense_nodes}")
             
             # BM25 retrieval
             bm25_nodes = []
             if self._bm25_retriever:
-                # Assuming the BM25 retriever implements a method 'retrieve'
                 bm25_nodes = self._bm25_retriever.retrieve(query_bundle.query_str)
-            print(f"bm25 nodes: {bm25_nodes}")
+            # print(f"bm25 nodes: {bm25_nodes}")
 
             # Normalize scores from each retrieval method separately.
             dense_norm_scores = self._normalize_scores(dense_nodes) if dense_nodes else []
@@ -209,7 +196,7 @@ class HybridRetriever(BaseRetriever):
             combined_results = {}
             # Process dense results
             for i, nws in enumerate(dense_nodes):
-                key = self._get_node_key(nws.node)
+                key = nws.id_
                 combined_results[key] = {
                     'node': nws.node,
                     'dense_score': dense_norm_scores[i] if i < len(dense_norm_scores) else dense_baseline,
@@ -217,7 +204,7 @@ class HybridRetriever(BaseRetriever):
                 }
             # Process BM25 results
             for i, nws in enumerate(bm25_nodes):
-                key = self._get_node_key(nws.node)
+                key = nws.id_
                 if key in combined_results:
                     combined_results[key]['bm25_score'] = bm25_norm_scores[i] if i < len(bm25_norm_scores) else 0
                 else:
@@ -226,7 +213,7 @@ class HybridRetriever(BaseRetriever):
                         'dense_score': dense_baseline,
                         'bm25_score': bm25_norm_scores[i] if i < len(bm25_norm_scores) else bm25_baseline
                     }
-            print(f"combined nodes: {combined_results}")
+            # print(f"combined nodes: {combined_results}")
 
             # Compute a weighted hybrid score for each node
             hybrid_results = []
@@ -240,7 +227,7 @@ class HybridRetriever(BaseRetriever):
 
             # Getting top hydrid result
             hybrid_results = hybrid_results[:self._similarity_top_k]
-            print(f"hydrid nodes: {hybrid_results}")
+            # print(f"hydrid nodes: {hybrid_results}")
 
             # Log the query and results
             results_str = json.dumps([self._serialize_node(node) for node in hybrid_results])

@@ -21,7 +21,7 @@ from llama_index.core.node_parser import SentenceSplitter
 # from llama_index.retrievers.bm25 import BM25Retriever
 # from modules.sentence import SentenceSplitter
 from modules.bm25 import BM25Retriever
-# from uuid import uuid4
+from uuid import uuid4
 # from nltk.tokenize import word_tokenize
 # import string
 
@@ -141,6 +141,10 @@ class HydridIndexingPipeline:
                                (e.g., {"source_path": "path/to/file", "source_type": "pdf"}).
         """
         try:
+            # Ensure unique document_ids
+            for doc in documents:
+                doc.doc_id = str(uuid4())
+
             print(f"Document IDs to process: {str([doc.id_ for doc in documents])}")
 
             # Creating Nodes with Merged IDs & Metadata
@@ -149,12 +153,10 @@ class HydridIndexingPipeline:
             # Process each document to create nodes with proper IDs
             for doc in documents:
                 chunks = self._text_parser.split_text(doc.text)
-                # print(f"Chunks to process: {chunks}")
 
                 for i, chunk in enumerate(chunks):
-                    # print(f"Chunk {i}: {chunk} ")
                     node = TextNode(text=chunk)
-                    # print(f"Node {i}: {node} ")
+                    print(f"Node {i}: {node} ")
                     
                     # Merge source document metadata with any extra metadata
                     metadata = doc.metadata.copy() if doc.metadata else {}
@@ -164,6 +166,8 @@ class HydridIndexingPipeline:
                     # Optionally embed the IDs in the metadata as well
                     metadata['document_id'] = doc.id_
                     metadata['chunk_id'] = f"{doc.id_}-{i+1}"
+                    print(f"metada = {metadata}")
+                    
                     node.metadata = metadata
 
                     nodes.append(node)
@@ -175,7 +179,7 @@ class HydridIndexingPipeline:
                         node.get_content(metadata_mode="all")
                         )
                     node.embedding = node_embedding
-                    # print(f"Node {j} with embedding: {node} ")
+                    print(f"Node {j} with embedding: {node} ")
                 except Exception as e:
                     print(f"Error embedding text node {node.metadata.chunk_id}: {e}")
 
@@ -207,7 +211,7 @@ class HydridIndexingPipeline:
                     self._bm25_retriever = BM25Retriever(
                         nodes=nodes,
                         language=self._language,
-                        similarity_top_k=5, # fixed for now
+                        similarity_top_k=10, # fixed for now
                         verbose=self._bm25_verbose
                     )
                     os.makedirs(self._bm25_path, exist_ok=True)
