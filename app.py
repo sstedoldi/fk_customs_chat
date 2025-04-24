@@ -86,25 +86,6 @@ def initialize_app(app):
             dense_weight=0.5,
             db_connection_params=db_args  # unpacked ** into the module
         )
-        # # Testing SentenceSplitter
-        # text = """
-        #     # INDEXING PIPELINE
-        #     Defines an IndexingPipeline class that provides methods to read documents
-        #     from various sources (PDF files, webpages, and directories) and processes
-        #     them by splitting the text into chunks, embedding the chunks using a 
-        #     provided embedding model, and adding them to a vector store. This version
-        #     also logs the indexing events to a dedicated table in the vector database,
-        #     including metadata such as the indexing date, source, and document type.
-        #     """
-        # print(text)
-        # text_parser = SentenceSplitter(chunk_size=20,
-        #                                chunk_overlap=2
-        #                                 # chunk_overlap=4,
-        #                             #    tokenizer=self._robust_tokenizer
-        #                                 )
-        # print(f"Text parser: {text_parser}")
-        # chunks = text_parser.split_text(text)
-        # print(f"Chunks test: {chunks}")
 
 @app.route('/')
 def index():
@@ -194,7 +175,6 @@ def index_documents():
         if documents is None or len(documents) == 0:
             return jsonify({'error': 'No documents found or invalid source_path'}), 450
         else:
-            # print("document_processing...")
             indexing_pipeline.document_processing(documents, extra_metadata=metadata)
             # updating bm25 retriever model
             retriever._bm25_retriever = indexing_pipeline._bm25_retriever
